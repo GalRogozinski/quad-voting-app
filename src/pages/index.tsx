@@ -7,13 +7,9 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Web3 Starter</title>
+        <title>Quad Voting</title>
 
-        <meta
-          name="description"
-          content="Use tailwind css, eslint, prettier & absolute imports instantly.
-            Easily extendable zero-config template for pros and beginners."
-        />
+        <meta name="description" content="Vote Fairly!" />
 
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -21,12 +17,11 @@ export default function Home() {
       <main className="flex min-h-screen justify-center bg-gradient-to-b from-gray-50 via-gray-50 to-gray-100 py-20">
         <div>
           <h1 className="px-5 text-center text-4xl font-bold leading-tight tracking-tight sm:mt-4 sm:text-6xl">
-            Web3 Starter
+            Quad Voting
           </h1>
 
           <h2 className="mx-auto mt-8 max-w-4xl px-10 text-center text-base tracking-tight text-gray-600 sm:text-2xl md:mt-5 md:text-2xl">
-            Tailwind CSS 3.0, ESLint & Prettier without a single line of config!
-            Easily extendable zero-config template for pros and beginners.
+            Vote Fairly!
           </h2>
 
           <div className="px-4 sm:px-0">
