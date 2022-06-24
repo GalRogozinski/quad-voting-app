@@ -4,7 +4,7 @@ import { useWeb3React } from "@web3-react/core"
 
 import ConnectorModal from "@components/ConnectorModal"
 
-export default function Home() {
+export default function ConnectWeb3() {
   const { isActive, account } = useWeb3React()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -26,7 +26,8 @@ export default function Home() {
       <ConnectorModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        desiredChain={1}
+        // Harmony Devnet
+        desiredChain={1666900000}
       />
     </div>
   )

@@ -4,6 +4,7 @@ import Head from "next/head"
 import Link from "next/link"
 
 import PollModal from "@components/PollModal"
+import ConnectWeb3 from "@pages/connect"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
@@ -17,6 +18,9 @@ export default function Home() {
 
   return (
     <div>
+      <div>
+        <ConnectWeb3 />
+      </div>
       <Head>
         <title>Quad Voting</title>
 

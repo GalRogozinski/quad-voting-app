@@ -18,6 +18,12 @@ const MOONRIVER: AddEthereumChainParameter["nativeCurrency"] = {
   decimals: 18,
 }
 
+const ONE: AddEthereumChainParameter["nativeCurrency"] = {
+  name: "Harmony ONE",
+  symbol: "ONE",
+  decimals: 18,
+}
+
 interface BasicChainInformation {
   urls: string[]
   name: string
@@ -97,6 +103,25 @@ export const CHAINS: {
         : undefined,
     ].filter((url) => url !== undefined),
     name: "Kovan",
+  },
+  // Harmony
+  1666600000: {
+    urls: ["https://api.harmony.one"],
+    name: "Harmony Mainnet",
+    nativeCurrency: ONE,
+    blockExplorerUrls: ["https://explorer.harmony.one/"],
+  },
+  1666700000: {
+    urls: ["https://api.s0.b.hmny.io"],
+    name: "Harmony Testnet",
+    nativeCurrency: ONE,
+    blockExplorerUrls: ["https://explorer.pops.one/"],
+  },
+  1666900000: {
+    urls: ["https://api.s0.ps.hmny.io"],
+    name: "Harmony Devnet",
+    nativeCurrency: ONE,
+    blockExplorerUrls: ["https://explorer.ps.hmny.io/"],
   },
   // Optimism
   10: {
