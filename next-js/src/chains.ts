@@ -24,6 +24,12 @@ const ONE: AddEthereumChainParameter["nativeCurrency"] = {
   decimals: 18,
 }
 
+const TEST: AddEthereumChainParameter["nativeCurrency"] = {
+  name: "Hardhat TEST",
+  symbol: "TEST",
+  decimals: 18,
+}
+
 interface BasicChainInformation {
   urls: string[]
   name: string
@@ -103,6 +109,12 @@ export const CHAINS: {
         : undefined,
     ].filter((url) => url !== undefined),
     name: "Kovan",
+  },
+  //Hardhat
+  31337: {
+    urls: ["http://127.0.0.1:8545"],
+    name: "Hardhat",
+    nativeCurrency: TEST,
   },
   // Harmony
   1666600000: {

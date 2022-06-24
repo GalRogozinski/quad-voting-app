@@ -26,8 +26,8 @@ export default function ConnectWeb3() {
       <ConnectorModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        // Harmony Devnet
-        desiredChain={1666900000}
+        // Hardhat
+        desiredChain={31337}
       />
     </div>
   )
