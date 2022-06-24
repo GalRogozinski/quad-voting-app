@@ -1,16 +1,22 @@
 import React from "react"
 
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Box, Button, TextField } from "@mui/material"
+import { Button, Dialog, TextField } from "@mui/material"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogContentText from "@mui/material/DialogContentText"
+import DialogTitle from "@mui/material/DialogTitle"
 import { useForm, Controller } from "react-hook-form"
 import * as yup from "yup"
 
 export default function PollModal({
   isOpen = false,
   onSubmit,
+  onCancel,
 }: {
   isOpen: boolean
   onSubmit: () => void
+  onCancel: () => void
 }) {
   const schema = yup
     .object({
@@ -22,6 +28,7 @@ export default function PollModal({
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -29,14 +36,10 @@ export default function PollModal({
 
   return (
     <div className="popup-box">
-      <div className="box">
-        <title>Poll</title>
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-          sx={{ mt: 1 }}
-        >
+      <Dialog open={isOpen} onClose={onSubmit}>
+        <DialogTitle>Poll</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Let's create a new proposal!</DialogContentText>
           <Controller
             name="proposal"
             control={control}
@@ -99,8 +102,13 @@ export default function PollModal({
             )}
           />
           <p>{errors.option_2?.message}</p>
+        </DialogContent>
+        <DialogActions>
           <Button
-            onClick={onClose()}
+            onClick={() => {
+              reset()
+              onCancel()
+            }}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
@@ -115,8 +123,8 @@ export default function PollModal({
           >
             Submit
           </Button>
-        </Box>
-      </div>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }

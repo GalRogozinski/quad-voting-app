@@ -3,7 +3,18 @@ import React from "react"
 import Head from "next/head"
 import Link from "next/link"
 
+import PollModal from "@components/PollModal"
+
 export default function Home() {
+  const [openPoll, setOpenPoll] = React.useState(false)
+
+  function cancelPoll() {
+    setOpenPoll(false)
+  }
+  function createPoll() {
+    return
+  }
+
   return (
     <div>
       <Head>
@@ -31,44 +42,23 @@ export default function Home() {
                 boxShadow: "rgba(0, 0, 0, 0.12) 0px 30px 60px 0px",
               }}
             >
-              <div className="flex flex-col justify-center rounded-l-lg bg-gray-50">
-                <FeatureList>
-                  <Feature main="web3-react">
-                    Connect your wallet with <InfoText text="web3-react" />
-                  </Feature>
+              <div className="space-y-5 place-self-center px-4 py-24 text-center">
+                <h3 className="text-3xl font-bold">Create Poll 👇</h3>
 
-                  <Feature main="TypeChain">
-                    <InfoText text="TypeChain" /> powered typed contracts
-                  </Feature>
-
-                  <Feature main="Tailwind CSS">
-                    Fast design workflow with <InfoText text="Tailwind CSS" />
-                  </Feature>
-
-                  <Feature main="TypeScript">
-                    <InfoText text="TypeScript" /> by default
-                  </Feature>
-
-                  <Feature main="ESLint config">
-                    Customizable <InfoText text="ESLint config" />
-                  </Feature>
-
-                  <Feature main="Code formatting">
-                    <InfoText text="Code formatting" /> with Prettier
-                  </Feature>
-
-                  <Feature main="Absolute imports">
-                    Standardized <InfoText text="absolute imports" />
-                  </Feature>
-
-                  <Feature main="Absolute imports">
-                    Ready-to-go <InfoText text="Jest" /> setup
-                  </Feature>
-                </FeatureList>
+                <span className="inline-flex rounded-md shadow-sm">
+                  <button type={"button"} onClick={() => setOpenPoll(true)}>
+                    Find Out What Your Community Thinks
+                  </button>
+                  <PollModal
+                    isOpen={openPoll}
+                    onSubmit={createPoll}
+                    onCancel={cancelPoll}
+                  ></PollModal>
+                </span>
               </div>
 
               <div className="space-y-5 place-self-center px-4 py-24 text-center">
-                <h3 className="text-3xl font-bold">Get it 👇</h3>
+                <h3 className="text-3xl font-bold">Register To Vote 👇</h3>
 
                 <span className="inline-flex rounded-md shadow-sm">
                   <Link href="https://github.com/agcty/web3-starter">
@@ -76,7 +66,7 @@ export default function Home() {
                       type="button"
                       className="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-4 font-medium leading-6 text-white transition duration-150 ease-in-out hover:bg-blue-500 focus:border-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 active:bg-blue-700 sm:px-10"
                     >
-                      Copy Template from GitHub
+                      Let's Make A Difference
                     </a>
                   </Link>
                 </span>
