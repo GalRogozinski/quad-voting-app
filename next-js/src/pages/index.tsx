@@ -7,14 +7,11 @@ import PollModal from "@components/PollModal"
 import { Poll } from "@models/poll"
 import ConnectWeb3 from "@pages/connect"
 
-import { genMaciKeypair } from "../../../quad-voting-maci/cli/ts/genMaciKeypair"
-
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
 
   function cancelPoll() {
     setOpenPoll(false)
-    genMaciKeypair(null)
   }
 
   function createPoll(data: any) {
