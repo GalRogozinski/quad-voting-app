@@ -112,7 +112,7 @@ export const CHAINS: {
   },
   //Hardhat
   31337: {
-    urls: ["http://127.0.0.1:8545"],
+    urls: ["http://quadvoting.twilightparadox.com:8545"],
     name: "Hardhat",
     nativeCurrency: TEST,
   },
