@@ -56,7 +56,7 @@ export default function PollModal({
           />
           <p>{errors.proposal?.message}</p>
           <Controller
-            name="expiration"
+            name="expirationDate"
             control={control}
             render={({ field: { onChange, value } }) => (
               <TextField
