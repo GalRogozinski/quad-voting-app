@@ -4,17 +4,23 @@ import Head from "next/head"
 import Link from "next/link"
 
 import PollModal from "@components/PollModal"
+import { Poll } from "@models/poll"
 import ConnectWeb3 from "@pages/connect"
+
+import { genMaciKeypair } from "../../../quad-voting-maci/cli/ts/genMaciKeypair"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
 
   function cancelPoll() {
     setOpenPoll(false)
+    genMaciKeypair(null)
   }
 
   function createPoll(data: any) {
-    // localStorage.setItem("poll", JSON.stringify(data))
+    let poll = {} as Poll
+    poll = Object.assign(poll, data)
+    window.localStorage.setItem(poll.id, JSON.stringify(data))
     console.log(data)
     setOpenPoll(false)
   }
