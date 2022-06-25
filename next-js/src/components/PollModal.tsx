@@ -15,7 +15,7 @@ export default function PollModal({
   onCancel,
 }: {
   isOpen: boolean
-  onSubmit: () => void
+  onSubmit: (data: any) => void
   onCancel: () => void
 }) {
   const schema = yup
@@ -36,7 +36,7 @@ export default function PollModal({
 
   return (
     <div className="popup-box">
-      <Dialog open={isOpen} onClose={onSubmit}>
+      <Dialog open={isOpen} onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>Poll</DialogTitle>
         <DialogContent>
           <DialogContentText>Let's create a new proposal!</DialogContentText>

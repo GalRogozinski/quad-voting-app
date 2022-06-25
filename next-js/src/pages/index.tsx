@@ -12,8 +12,11 @@ export default function Home() {
   function cancelPoll() {
     setOpenPoll(false)
   }
-  function createPoll() {
-    return
+
+  function createPoll(data: any) {
+    // localStorage.setItem("poll", JSON.stringify(data))
+    console.log(data)
+    setOpenPoll(false)
   }
 
   return (
