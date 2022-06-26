@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const nodeExternals = require("webpack-node-externals")
 
 const nextConfig = {
   reactStrictMode: true,
@@ -7,7 +8,7 @@ const nextConfig = {
       test: /\.node$/,
       loader: "node-loader",
     })
-    // config.target = "node"
+    config.externals = [nodeExternals()]
     // config.node = { __dirname: false }
     config.resolve.alias["@sentry/node"] = "@sentry/browser"
     config.resolve.modules.concat(["node_modules"])
