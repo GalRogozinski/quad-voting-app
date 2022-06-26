@@ -10,6 +10,7 @@ const nextConfig = {
     // config.target = "node"
     // config.node = { __dirname: false }
     config.resolve.alias["@sentry/node"] = "@sentry/browser"
+    config.resolve.modules.concat(["node_modules"])
 
     return config
   },
