@@ -1,22 +1,50 @@
 import React from "react"
 
+import { useWeb3React } from "@web3-react/core"
 import Head from "next/head"
 import Link from "next/link"
 
 import PollModal from "@components/PollModal"
+import { MACI_CONTRACT } from "@contract"
 import { Poll } from "@models/poll"
 import ConnectWeb3 from "@pages/connect"
+import { getBaseLog } from "@utils"
+
+import {
+  deployPollTs,
+  PollParams,
+} from "../../quad-voting-maci/contracts/ts/deployPollTs"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
-
+  const { account, chainId, connector, error, provider } = useWeb3React()
   function cancelPoll() {
     setOpenPoll(false)
+  }
+
+  const determineArgs = (data: Poll): PollParams => {
+    let pollParams = {} as PollParams
+    // duration in seconds
+    pollParams.duration = (data.expirationDate.getTime() - Date.now()) / 1000
+    pollParams.max_messages = 25
+    pollParams.max_vote_options = 25
+    pollParams.msg_tree_depth = Math.ceil(
+      getBaseLog(5, pollParams.max_messages)
+    )
+    pollParams.vote_option_tree_depth = Math.ceil(
+      getBaseLog(5, pollParams.max_vote_options)
+    )
+    // should be half the message tree depth
+    pollParams.int_state_tree_depth = Math.ceil(pollParams.msg_tree_depth / 2)
+    pollParams.msg_batch_depth = pollParams.int_state_tree_depth
+    return pollParams
   }
 
   function createPoll(data: any) {
     let poll = {} as Poll
     poll = Object.assign(poll, data)
+    const args = determineArgs(data)
+    deployPollTs(provider, MACI_CONTRACT, args)
     window.localStorage.setItem(poll.id, JSON.stringify(data))
     console.log(data)
     setOpenPoll(false)

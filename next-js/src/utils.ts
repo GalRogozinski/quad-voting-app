@@ -10,3 +10,7 @@ export function parseBigNumberToFloat(val: BigNumber, decimals: number = 18) {
   const parsed = parseFloat(formatted)
   return parsed
 }
+
+export function getBaseLog(x, y: number): number {
+  return Math.log(y) / Math.log(x)
+}
