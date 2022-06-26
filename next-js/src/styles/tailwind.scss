@@ -1,6 +1,10 @@
 /* purgecss start ignore */
 @tailwind base;
 
+button, [type='button'], [type='reset'], [type='submit'] {
+  background-color: rgb(25, 118, 210) !important
+}
+
 @tailwind components;
 /* purgecss end ignore */
 @tailwind utilities;
