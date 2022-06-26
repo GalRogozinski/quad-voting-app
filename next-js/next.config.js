@@ -8,6 +8,7 @@ const nextConfig = {
       test: /\.node$/,
       loader: "node-loader",
     })
+    config.externalsPresets = { node: true }
     config.externals = [nodeExternals()]
     // config.node = { __dirname: false }
     config.resolve.alias["@sentry/node"] = "@sentry/browser"
