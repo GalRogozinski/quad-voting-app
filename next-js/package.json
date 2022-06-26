@@ -17,7 +17,8 @@
   "browser": {
     "fs": false,
     "path": false,
-    "os": false
+    "os": false,
+    "child_process": false
   },
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.3.0",
