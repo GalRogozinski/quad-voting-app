@@ -21,7 +21,14 @@
     "child_process": false,
     "module": false,
     "repl": false,
-    "console": false
+    "console": false,
+    "assert":false,
+    "querystring": false,
+    "vm": false,
+    "zlib": false,
+    "http": false,
+    "https": false,
+    "constants": false
   },
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.3.0",

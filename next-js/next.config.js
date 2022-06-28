@@ -8,11 +8,23 @@ const nextConfig = {
       test: /\.node$/,
       loader: "node-loader",
     })
-    config.externalsPresets = { node: true }
-    config.externals = [nodeExternals()]
+    // config.externalsPresets = { node: true }
+    // config.externals = [nodeExternals()]
     // config.node = { __dirname: false }
     config.resolve.alias["@sentry/node"] = "@sentry/browser"
-    config.resolve.modules.concat(["node_modules"])
+    // config.resolve.modules.concat(["node_modules"])
+    config.resolve.fallback = {
+      fs: false,
+      stream: false,
+      crypto: false,
+      os: false,
+      readline: false,
+      ejs: false,
+      assert: require.resolve("assert"),
+      path: false,
+      process: false,
+      require: false,
+    }
 
     return config
   },
