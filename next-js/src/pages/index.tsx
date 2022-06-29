@@ -12,9 +12,8 @@ import ConnectWeb3 from "@pages/connect"
 import { getBaseLog } from "@utils"
 
 import {
-  deployPollTs,
-  PollParams,
-} from "../../quad-voting-maci/contracts/ts/deployPollTs"
+  deployPollApi, PollParams,
+} from "../../quad-voting-maci/cli/build/deployPollApi"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
@@ -45,7 +44,7 @@ export default function Home() {
     let poll = {} as Poll
     poll = Object.assign(poll, data)
     const args = determineArgs(data)
-    deployPollTs(provider, MACI_CONTRACT, args)
+    deployPollApi(MACI_CONTRACT, args)
     window.localStorage.setItem(poll.id, JSON.stringify(data))
     console.log(data)
     setOpenPoll(false)
