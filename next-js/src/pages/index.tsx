@@ -12,39 +12,45 @@ import ConnectWeb3 from "@pages/connect"
 import { getBaseLog } from "@utils"
 
 import {
-  deployPollApi, PollParams,
-} from "../../quad-voting-maci/cli/build/deployPollApi"
+  PubKey,
+  PrivKey,
+  Keypair,
+  PCommand,
+} from 'quad-voting-maci/domainobjs'
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
   const { account, chainId, connector, error, provider } = useWeb3React()
   function cancelPoll() {
     setOpenPoll(false)
+    cryptoExperiment()
   }
 
-  const determineArgs = (data: Poll): PollParams => {
-    let pollParams = {} as PollParams
-    // duration in seconds
-    pollParams.duration = (data.expirationDate.getTime() - Date.now()) / 1000
-    pollParams.max_messages = 25
-    pollParams.max_vote_options = 25
-    pollParams.msg_tree_depth = Math.ceil(
-      getBaseLog(5, pollParams.max_messages)
+  function cryptoExperiment () {
+    let keypair = new Keypair();
+    const command: PCommand = new PCommand(
+        BigInt(1),
+        keypair.pubKey,
+        BigInt(0),
+        BigInt(1),
+        BigInt(1),
+        BigInt(1),
+        BigInt(1),
     )
-    pollParams.vote_option_tree_depth = Math.ceil(
-      getBaseLog(5, pollParams.max_vote_options)
+    const signature = command.sign(keypair.privKey)
+    const message = command.encrypt(
+        signature,
+        Keypair.genEcdhSharedKey(
+            keypair.privKey,
+            keypair.pubKey,
+        )
     )
-    // should be half the message tree depth
-    pollParams.int_state_tree_depth = Math.ceil(pollParams.msg_tree_depth / 2)
-    pollParams.msg_batch_depth = pollParams.int_state_tree_depth
-    return pollParams
   }
-
   function createPoll(data: any) {
     let poll = {} as Poll
     poll = Object.assign(poll, data)
-    const args = determineArgs(data)
-    deployPollApi(MACI_CONTRACT, args)
+    // const args = determineArgs(data)
+    // deployPollApi(MACI_CONTRACT, args)
     window.localStorage.setItem(poll.id, JSON.stringify(data))
     console.log(data)
     setOpenPoll(false)
