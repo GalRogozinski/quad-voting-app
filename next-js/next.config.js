@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 const nodeExternals = require("webpack-node-externals")
 
 const nextConfig = {
@@ -8,11 +9,12 @@ const nextConfig = {
       test: /\.node$/,
       loader: "node-loader",
     })
+    // config.plugins.push(new NodePolyfillPlugin())
     // config.externalsPresets = { node: true }
     // config.externals = [nodeExternals()]
     // config.node = { __dirname: false }
     config.resolve.alias["@sentry/node"] = "@sentry/browser"
-    // config.resolve.modules.concat(["node_modules"])
+    config.resolve.modules.concat(["node_modules"])
     config.resolve.fallback = {
       fs: false,
       stream: false,

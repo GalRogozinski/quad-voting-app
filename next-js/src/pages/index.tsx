@@ -5,47 +5,36 @@ import { useWeb3React } from "@web3-react/core"
 import Head from "next/head"
 import Link from "next/link"
 
+import { VerifierOpts, verifyClient } from "@cli/ts/verifyClient"
 import PollModal from "@components/PollModal"
-import { MACI_CONTRACT } from "@contract"
 import { Poll } from "@models/poll"
 import ConnectWeb3 from "@pages/connect"
-import { getBaseLog } from "@utils"
-
-import {
-  PubKey,
-  PrivKey,
-  Keypair,
-  PCommand,
-} from 'quad-voting-maci/domainobjs'
+// import { Keypair, PCommand } from "quad-voting-maci/domainobjs"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
   const { account, chainId, connector, error, provider } = useWeb3React()
   function cancelPoll() {
     setOpenPoll(false)
-    cryptoExperiment()
   }
 
-  function cryptoExperiment () {
-    let keypair = new Keypair();
-    const command: PCommand = new PCommand(
-        BigInt(1),
-        keypair.pubKey,
-        BigInt(0),
-        BigInt(1),
-        BigInt(1),
-        BigInt(1),
-        BigInt(1),
-    )
-    const signature = command.sign(keypair.privKey)
-    const message = command.encrypt(
-        signature,
-        Keypair.genEcdhSharedKey(
-            keypair.privKey,
-            keypair.pubKey,
-        )
-    )
-  }
+  // function cryptoExperiment() {
+  //   let keypair = new Keypair()
+  //   const command: PCommand = new PCommand(
+  //     BigInt(1),
+  //     keypair.pubKey,
+  //     BigInt(0),
+  //     BigInt(1),
+  //     BigInt(1),
+  //     BigInt(1),
+  //     BigInt(1)
+  //   )
+  //   const signature = command.sign(keypair.privKey)
+  //   const message = command.encrypt(
+  //     signature,
+  //     Keypair.genEcdhSharedKey(keypair.privKey, keypair.pubKey)
+  //   )
+  // }
   function createPoll(data: any) {
     let poll = {} as Poll
     poll = Object.assign(poll, data)
@@ -53,6 +42,8 @@ export default function Home() {
     // deployPollApi(MACI_CONTRACT, args)
     window.localStorage.setItem(poll.id, JSON.stringify(data))
     console.log(data)
+    // cryptoExperiment()
+    verifyClient(null, {} as VerifierOpts)
     setOpenPoll(false)
   }
 
