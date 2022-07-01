@@ -7,18 +7,19 @@ import { AppProps } from "next/app"
 import Web3Manager from "@components/connectors/Web3Manager"
 import connectors from "@connectors"
 import "../styles/tailwind.scss"
+import config from "config.json"
 
-const SERVER_URL = "http://quadvoting.twilightparadox.com:3001/"
-const MACI = "maci/"
+const SERVER_URL = `${config.server_url}:${config.server_port}`
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+  const fetchPolls = async () => {}
   const signUpAPI = async (
     signUpOps: JSON,
     resFunc: Function,
     errFunc: Function
   ) => {
     axios
-      .post(SERVER_URL + MACI + "signup", signUpOps)
+      .post(`${SERVER_URL}\\${config.maci}\\signup`, signUpOps)
       .then((response) => resFunc(response))
       .catch((error) => errFunc(error))
   }
