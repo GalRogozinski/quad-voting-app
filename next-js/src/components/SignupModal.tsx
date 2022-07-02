@@ -7,10 +7,12 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 import { useForm, Controller } from "react-hook-form"
 
+import { SignUpOps } from "@models/poll"
+
 export default function SignupModal({
   isOpen = false,
   onSubmit,
-  onCancel,
+  handleClose,
   pollName,
   pollID,
   pollAddress,
@@ -18,8 +20,8 @@ export default function SignupModal({
   pk,
 }: {
   isOpen: boolean
-  onSubmit: (data: any) => void
-  onCancel: () => void
+  onSubmit: (data: SignUpOps) => any
+  handleClose: () => void
   pollName: string
   pollID: number
   pollAddress: string
@@ -37,7 +39,12 @@ export default function SignupModal({
 
   return (
     <div className="popup-box">
-      <Dialog open={isOpen} onSubmit={handleSubmit(onSubmit)}>
+      <Dialog
+        open={isOpen}
+        onSubmit={handleSubmit(
+          onSubmit({ ivcp_data: "", sg_data: "", pub_key: pk })
+        )}
+      >
         <DialogTitle>Sign Up To Vote on Poll {pollID}</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -113,7 +120,7 @@ export default function SignupModal({
           <Button
             onClick={() => {
               reset()
-              onCancel()
+              handleClose()
             }}
             fullWidth
             variant="contained"
@@ -123,7 +130,9 @@ export default function SignupModal({
           </Button>
           <Button
             name="Register"
-            onClick={handleSubmit(onSubmit)}
+            onClick={handleSubmit(
+              onSubmit({ ivcp_data: "", sg_data: "", pub_key: pk })
+            )}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

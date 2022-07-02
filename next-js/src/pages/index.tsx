@@ -5,19 +5,29 @@ import { useWeb3React } from "@web3-react/core"
 import Head from "next/head"
 import Link from "next/link"
 
-import { VerifierOpts, verifyClient } from "@cli/ts/verifyClient"
+// import { VerifierOpts, verifyClient } from "@cli/ts/verifyClient"
 import NewPollModal from "@components/NewPollModal"
+import SignupModal from "@components/SignupModal"
+import { Keypair } from "@domainobjs"
 import { Poll } from "@models/poll"
-import { fetchPolls } from "@pages/_app"
+import { fetchPolls, signUpAPI } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
 // import { Keypair, PCommand } from "quad-voting-maci/domainobjs"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
-  const [openSignup, setOpenSignup] = React.useState(false)
+  const [polls, setPolls] = React.useState([] as Poll[])
+  const [maciSK, setMaciSK] = React.useState("")
+  const [maciPK, setMaciPK] = React.useState("")
   const { account, chainId, connector, error, provider } = useWeb3React()
   function cancelPoll() {
     setOpenPoll(false)
+  }
+
+  function generateKeyPairs() {
+    let keys = new Keypair()
+    setMaciSK(keys.privKey.serialize)
+    setMaciPK(keys.pubKey.serialize)
   }
 
   // function cryptoExperiment() {
@@ -38,22 +48,22 @@ export default function Home() {
   //   )
   // }
   function createPoll(data: any) {
-    let poll = {} as Poll
-    poll = Object.assign(poll, data)
-    // const args = determineArgs(data)
-    // deployPollApi(MACI_CONTRACT, args)
-    window.localStorage.setItem(poll.id, JSON.stringify(data))
-    console.log(data)
-    // cryptoExperiment()
-    verifyClient(null, {} as VerifierOpts)
-    setOpenPoll(false)
+    // let poll = {} as Poll
+    // poll = Object.assign(poll, data)
+    // // const args = determineArgs(data)
+    // // deployPollApi(MACI_CONTRACT, args)
+    // window.localStorage.setItem(poll.id, JSON.stringify(data))
+    // console.log(data)
+    // // cryptoExperiment()
+    // verifyClient(null, {} as VerifierOpts)
+    // setOpenPoll(false)
   }
 
   React.useEffect(() => {
-    let polls: Poll[] = []
     fetchPolls(
-      (res: any) => (polls = res.polls),
+      (res: any) => setPolls(res),
       (err: any) => {
+        console.error(err)
         throw new Error(err)
       }
     )
@@ -119,6 +129,35 @@ export default function Home() {
                 </span>
               </div>
             </section>
+            <div>
+              {polls.map((poll) => (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      generateKeyPairs()
+                      poll.openModal = true
+                    }}
+                  >
+                    Sign Up
+                  </button>
+                  <SignupModal
+                    isOpen={poll.openModal}
+                    onSubmit={() => {
+                      signUpAPI
+                    }}
+                    handleClose={() => {
+                      poll.openModal = false
+                    }}
+                    pollName={poll.name}
+                    pollID={poll.pollID}
+                    pollAddress={poll.pollAddress}
+                    pk={maciPK}
+                    sk={maciSK}
+                  ></SignupModal>
+                </>
+              ))}
+            </div>
             <p className="mt-6 text-center text-xs font-medium text-gray-600">
               Built by{" "}
               <a
