@@ -7,24 +7,29 @@ import { AppProps } from "next/app"
 import Web3Manager from "@components/connectors/Web3Manager"
 import connectors from "@connectors"
 import "../styles/tailwind.scss"
+import { SignUpOps } from "@models/poll"
 import config from "config.json"
 
 const SERVER_URL = `${config.server_url}:${config.server_port}`
+axios.defaults.baseURL = SERVER_URL
+axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8"
+axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*"
 
-const fetchPolls = async (resFunc: Function, errFunc: Function) => {
+const fetchPolls = (resFunc: Function, errFunc: Function) => {
+  console.log("Fetching polls")
   axios
-    .get(`${SERVER_URL}\\polls`)
+    .get(`maci/polls`)
     .then((response) => resFunc(response))
     .catch((error) => errFunc(error))
 }
 
-const signUpAPI = async (
-  signUpOps: JSON,
+const signUpAPI = (
+  signUpOps: SignUpOps,
   resFunc: Function,
   errFunc: Function
 ) => {
   axios
-    .post(`${SERVER_URL}\\${config.maci}\\signup`, signUpOps)
+    .post(`maci/signup`, signUpOps)
     .then((response) => resFunc(response))
     .catch((error) => errFunc(error))
 }
