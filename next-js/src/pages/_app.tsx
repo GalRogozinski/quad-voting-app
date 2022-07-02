@@ -11,19 +11,25 @@ import config from "config.json"
 
 const SERVER_URL = `${config.server_url}:${config.server_port}`
 
-function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-  const fetchPolls = async () => {}
-  const signUpAPI = async (
-    signUpOps: JSON,
-    resFunc: Function,
-    errFunc: Function
-  ) => {
-    axios
-      .post(`${SERVER_URL}\\${config.maci}\\signup`, signUpOps)
-      .then((response) => resFunc(response))
-      .catch((error) => errFunc(error))
-  }
+const fetchPolls = async (resFunc: Function, errFunc: Function) => {
+  axios
+    .get(`${SERVER_URL}\\polls`)
+    .then((response) => resFunc(response))
+    .catch((error) => errFunc(error))
+}
 
+const signUpAPI = async (
+  signUpOps: JSON,
+  resFunc: Function,
+  errFunc: Function
+) => {
+  axios
+    .post(`${SERVER_URL}\\${config.maci}\\signup`, signUpOps)
+    .then((response) => resFunc(response))
+    .catch((error) => errFunc(error))
+}
+
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <Web3ReactProvider connectors={connectors}>
       <Web3Manager />
@@ -33,3 +39,4 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 }
 
 export default MyApp
+export { fetchPolls, signUpAPI }

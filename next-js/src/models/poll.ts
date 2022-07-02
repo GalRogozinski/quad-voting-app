@@ -4,7 +4,6 @@
 
 export type Poll = {
   id: string
-  voteMap: Map<number, number>
 
   //user input
   description: string

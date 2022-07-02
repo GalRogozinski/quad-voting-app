@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import { useForm, Controller } from "react-hook-form"
 import * as yup from "yup"
 
-export default function PollModal({
+export default function NewPollModal({
   isOpen = false,
   onSubmit,
   onCancel,

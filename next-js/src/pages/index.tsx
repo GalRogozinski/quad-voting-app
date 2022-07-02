@@ -6,13 +6,15 @@ import Head from "next/head"
 import Link from "next/link"
 
 import { VerifierOpts, verifyClient } from "@cli/ts/verifyClient"
-import PollModal from "@components/PollModal"
+import NewPollModal from "@components/NewPollModal"
 import { Poll } from "@models/poll"
+import { fetchPolls } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
 // import { Keypair, PCommand } from "quad-voting-maci/domainobjs"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
+  const [openSignup, setOpenSignup] = React.useState(false)
   const { account, chainId, connector, error, provider } = useWeb3React()
   function cancelPoll() {
     setOpenPoll(false)
@@ -46,6 +48,16 @@ export default function Home() {
     verifyClient(null, {} as VerifierOpts)
     setOpenPoll(false)
   }
+
+  React.useEffect(() => {
+    let polls: Poll[] = []
+    fetchPolls(
+      (res: any) => (polls = res.polls),
+      (err: any) => {
+        throw new Error(err)
+      }
+    )
+  })
 
   return (
     <div>
@@ -84,11 +96,11 @@ export default function Home() {
                   <button type={"button"} onClick={() => setOpenPoll(true)}>
                     Find Out What Your Community Thinks
                   </button>
-                  <PollModal
+                  <NewPollModal
                     isOpen={openPoll}
                     onSubmit={createPoll}
                     onCancel={cancelPoll}
-                  ></PollModal>
+                  ></NewPollModal>
                 </span>
               </div>
 

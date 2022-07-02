@@ -11,6 +11,6 @@ export function parseBigNumberToFloat(val: BigNumber, decimals: number = 18) {
   return parsed
 }
 
-export function getBaseLog(x, y: number): number {
+export function getBaseLog(x: number, y: number): number {
   return Math.log(y) / Math.log(x)
 }
