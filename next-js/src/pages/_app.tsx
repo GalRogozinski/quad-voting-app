@@ -7,7 +7,7 @@ import { AppProps } from "next/app"
 import Web3Manager from "@components/connectors/Web3Manager"
 import connectors from "@connectors"
 import "../styles/tailwind.scss"
-import { SignUpOps } from "@models/poll"
+import { PublishOps, SignUpOps } from "@models/poll"
 import config from "config.json"
 
 const SERVER_URL = `${config.server_url}:${config.server_port}`
@@ -16,7 +16,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8"
 axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*"
 
 const fetchPolls = (
-  resFunc: (res: AxiosResponse<any>) => void,
+  resFunc: (res: AxiosResponse) => void,
   errFunc: (err: AxiosError<any>) => void
 ) => {
   console.log("Fetching polls")
@@ -28,11 +28,22 @@ const fetchPolls = (
 
 const signUpAPI = (
   signUpOps: SignUpOps,
-  resFunc: Function,
-  errFunc: Function
+  resFunc: (res: AxiosResponse) => void,
+  errFunc: (err: AxiosError<any>) => void
 ) => {
   axios
     .post(`maci/signup`, signUpOps)
+    .then((response) => resFunc(response))
+    .catch((error) => errFunc(error))
+}
+
+const publishAPI = (
+  publishOps: PublishOps,
+  resFunc: (res: AxiosResponse) => void,
+  errFunc: (err: AxiosError<any>) => void
+) => {
+  axios
+    .post(`maci/publishMessage`, publishOps)
     .then((response) => resFunc(response))
     .catch((error) => errFunc(error))
 }

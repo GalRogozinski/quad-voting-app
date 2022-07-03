@@ -9,18 +9,20 @@ import DialogTitle from "@mui/material/DialogTitle"
 import { useForm, Controller } from "react-hook-form"
 import * as yup from "yup"
 
-import { Poll } from "@models/poll"
+import { Poll, PublishOps } from "@models/poll"
+
+const onSubmit = (data: any, poll: Poll) => {
+  const voteOpts: PublishOps = data
+}
 
 export default function VoteModal({
   isOpen = false,
   poll,
   onSubmit,
-  onCancel,
 }: {
   isOpen: boolean
   poll: Poll
   onSubmit: (data: any) => void
-  onCancel: () => void
 }) {
   const schema = yup
     .object({
@@ -71,7 +73,7 @@ export default function VoteModal({
                 value={value || ""}
                 onChange={onChange}
               >
-                {poll.vote_options.map((option, index) => (
+                {poll.voteOptions.map((option, index) => (
                   <MenuItem value={option} key={index}></MenuItem>
                 ))}
               </Select>
@@ -83,7 +85,7 @@ export default function VoteModal({
           <Button
             onClick={() => {
               reset()
-              onCancel()
+              poll.openVoteModal = false
             }}
             fullWidth
             variant="contained"

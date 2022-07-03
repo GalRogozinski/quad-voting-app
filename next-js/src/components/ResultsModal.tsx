@@ -9,13 +9,15 @@ import { useForm, Controller } from "react-hook-form"
 
 import { SignUpOps } from "@models/poll"
 
-export default function VerifyModal({
+export default function ResultsModal({
   isOpen = false,
   onSubmit,
   handleClose,
   pollName,
   pollID,
   pollAddress,
+  sk,
+  pk,
 }: {
   isOpen: boolean
   onSubmit: (data: SignUpOps) => any
@@ -40,7 +42,7 @@ export default function VerifyModal({
       <Dialog
         open={isOpen}
         onSubmit={handleSubmit(
-          onSubmit({ ivcp_data: "", sg_data: "", pub_key: pk })
+          onSubmit({ ivcpData: "", sgData: "", pubKey: pk })
         )}
       >
         <DialogTitle>Sign Up To Vote on Poll {pollID}</DialogTitle>
@@ -129,7 +131,7 @@ export default function VerifyModal({
           <Button
             name="Register"
             onClick={handleSubmit(
-              onSubmit({ ivcp_data: "", sg_data: "", pub_key: pk })
+              onSubmit({ ivcpData: "", sgData: "", pubKey: pk })
             )}
             fullWidth
             variant="contained"
