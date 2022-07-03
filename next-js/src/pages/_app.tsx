@@ -1,7 +1,7 @@
 import React from "react"
 
 import { Web3ReactProvider } from "@web3-react/core"
-import axios from "axios"
+import axios, { AxiosError, AxiosResponse } from "axios"
 import { AppProps } from "next/app"
 
 import Web3Manager from "@components/connectors/Web3Manager"
@@ -15,7 +15,10 @@ axios.defaults.baseURL = SERVER_URL
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8"
 axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*"
 
-const fetchPolls = (resFunc: Function, errFunc: Function) => {
+const fetchPolls = (
+  resFunc: (res: AxiosResponse<any>) => void,
+  errFunc: (err: AxiosError<any>) => void
+) => {
   console.log("Fetching polls")
   axios
     .get(`maci/polls`)

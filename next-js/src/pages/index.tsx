@@ -60,13 +60,22 @@ export default function Home() {
   }
 
   React.useEffect(() => {
+    let mounted = true
     fetchPolls(
-      (res: any) => setPolls(res),
-      (err: any) => {
+      (res) => {
+        if (mounted) {
+          console.log(res.data)
+          setPolls(res.data)
+        }
+      },
+      (err) => {
         console.error(err)
-        throw new Error(err)
+        throw new Error(err.stack)
       }
     )
+    return () => {
+      mounted = false
+    }
   })
 
   return (
