@@ -167,61 +167,9 @@ export default function Home() {
                 </>
               ))}
             </div>
-            <p className="mt-6 text-center text-xs font-medium text-gray-600">
-              Built by{" "}
-              <a
-                className="font-medium text-blue-600 transition duration-150 ease-in-out hover:text-blue-500 focus:underline focus:outline-none"
-                href="https://twitter.com/agctyz"
-              >
-                @agctyz
-              </a>
-            </p>
           </div>
         </div>
       </main>
     </div>
-  )
-}
-
-interface FeatureListProps {
-  children: React.ReactNode
-}
-
-function FeatureList({ children }: FeatureListProps) {
-  return <ul className="space-y-5 px-12 py-12">{children}</ul>
-}
-
-function Feature({ children, main }) {
-  return (
-    <li className="flex items-center">
-      <CheckIcon className="hiddden hidden h-5 w-5 flex-shrink-0 rounded-full bg-blue-600 p-1 text-gray-100 sm:inline" />
-      <p className="ml-3 hidden text-lg text-gray-600 sm:inline">{children}</p>
-
-      <p className="mx-auto sm:hidden">
-        <InfoText text={main} />
-      </p>
-    </li>
-  )
-}
-
-function InfoText({ text }) {
-  return (
-    <span className="inline-flex items-center rounded-md bg-gray-100 px-3 py-2 font-medium text-gray-700">
-      <CheckIcon className="mr-3 inline-flex h-5 w-5 flex-shrink-0 rounded-full bg-blue-600 p-1 text-gray-100 sm:hidden" />
-      {text}
-    </span>
-  )
-}
-
-function CheckIcon(props) {
-  return (
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M5 13l4 4L19 7"
-      />
-    </svg>
   )
 }
