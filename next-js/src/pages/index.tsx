@@ -12,6 +12,7 @@ import { Keypair } from "@domainobjs"
 import { Poll } from "@models/poll"
 import { fetchPolls, signUpAPI } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
+import VoteModal from "@components/VoteModal";
 // import { Keypair, PCommand } from "quad-voting-maci/domainobjs"
 
 export default function Home() {
@@ -64,8 +65,12 @@ export default function Home() {
     fetchPolls(
       (res) => {
         if (mounted) {
-          console.log(res.data)
-          setPolls(res.data)
+          let pollsObj = JSON.parse(res.data)
+          console.log(pollsObj)
+          if (pollsObj.constructor !== Array) {
+            pollsObj = [pollsObj]
+          }
+          setPolls(pollsObj)
         }
       },
       (err) => {
@@ -140,7 +145,7 @@ export default function Home() {
             </section>
             <div>
               {polls.map((poll) => (
-                <>
+                <div key="poll" className="container">
                   <button
                     type="button"
                     onClick={() => {
@@ -149,6 +154,22 @@ export default function Home() {
                     }}
                   >
                     Sign Up
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      poll.openVoteModal = true
+                    }}
+                  >
+                    Vote Fairly!
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      poll.openResultsModal = true
+                    }}
+                  >
+                    Show results and Verify!
                   </button>
                   <SignupModal
                     isOpen={poll.openSignUpModal}
@@ -164,7 +185,8 @@ export default function Home() {
                     pk={maciPK}
                     sk={maciSK}
                   ></SignupModal>
-                </>
+                  <VoteModal isOpen={poll.openSignUpModal} poll={poll} onSubmit={}}
+                </div>
               ))}
             </div>
           </div>
