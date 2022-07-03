@@ -11,7 +11,7 @@ export type Poll = {
   expirationDate: Date
   vote_options: string[]
   //UI helpers
-  openModal: boolean
+  openSignUpModal: boolean
 }
 
 export type SignUpOps = {

@@ -145,18 +145,18 @@ export default function Home() {
                     type="button"
                     onClick={() => {
                       generateKeyPairs()
-                      poll.openModal = true
+                      poll.openSignUpModal = true
                     }}
                   >
                     Sign Up
                   </button>
                   <SignupModal
-                    isOpen={poll.openModal}
+                    isOpen={poll.openSignUpModal}
                     onSubmit={() => {
                       signUpAPI
                     }}
                     handleClose={() => {
-                      poll.openModal = false
+                      poll.openSignUpModal = false
                     }}
                     pollName={poll.name}
                     pollID={poll.pollID}
