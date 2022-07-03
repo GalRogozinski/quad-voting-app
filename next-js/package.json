@@ -28,7 +28,10 @@
     "zlib": false,
     "http": false,
     "https": false,
-    "constants": false
+    "constants": false,
+    "crypto": false,
+    "crypto-js": false,
+    "circomlib": false
   },
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.3.0",
@@ -51,6 +54,7 @@
     "assert": "^2.0.0",
     "axios": "^0.27.2",
     "bufferutil": "^4.0.6",
+    "crypto-js": "^4.1.1",
     "electron": "^19.0.6",
     "ethers": "^5.5.4",
     "fs": "^0.0.1-security",

@@ -19,6 +19,7 @@ const nextConfig = {
       fs: false,
       stream: false,
       crypto: false,
+      cryptojs: false,
       os: false,
       readline: false,
       ejs: false,
@@ -26,6 +27,8 @@ const nextConfig = {
       path: false,
       process: false,
       require: false,
+      circomlib: false,
+      eddsa: false,
     }
 
     return config
