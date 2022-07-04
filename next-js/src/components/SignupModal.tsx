@@ -7,24 +7,18 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 import { useForm, Controller } from "react-hook-form"
 
-import { SignUpOps } from "@models/poll"
+import { Poll, SignUpOps } from "@models/poll"
 
 export default function SignupModal({
-  isOpen = false,
   onSubmit,
   handleClose,
-  pollName,
-  pollID,
-  pollAddress,
+  poll,
   sk,
   pk,
 }: {
-  isOpen: boolean
   onSubmit: (data: SignUpOps) => any
-  handleClose: () => void
-  pollName: string
-  pollID: number
-  pollAddress: string
+  handleClose: (poll: Poll) => void
+  poll: Poll
   sk: string
   pk: string
 }) {
@@ -40,12 +34,12 @@ export default function SignupModal({
   return (
     <div className="popup-box">
       <Dialog
-        open={isOpen}
+        open={poll.openSignUpModal}
         onSubmit={handleSubmit(
           onSubmit({ ivcpData: "", sgData: "", pubKey: pk })
         )}
       >
-        <DialogTitle>Sign Up To Vote on Poll {pollID}</DialogTitle>
+        <DialogTitle>Sign Up To Vote on Poll {poll.pollID}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             You must register before you can vote
@@ -57,9 +51,9 @@ export default function SignupModal({
               <TextField
                 margin="normal"
                 fullWidth
-                required
-                value={pollName}
+                defaultValue={poll.poll_name}
                 label="Poll Name"
+                inputProps={{ readOnly: true }}
               />
             )}
           />
@@ -70,9 +64,9 @@ export default function SignupModal({
               <TextField
                 margin="normal"
                 fullWidth
-                required
-                value={pollID}
+                defaultValue={poll.pollID}
                 label="Poll ID"
+                inputProps={{ readOnly: true }}
               />
             )}
           />
@@ -83,9 +77,9 @@ export default function SignupModal({
               <TextField
                 margin="normal"
                 label="Poll Address"
-                value={pollAddress}
+                defaultValue={poll.pollAddr}
                 fullWidth
-                required
+                inputProps={{ readOnly: true }}
               />
             )}
           />
@@ -98,7 +92,7 @@ export default function SignupModal({
                 required
                 fullWidth
                 label="Secret Maci Key"
-                value={sk}
+                defaultValue={sk}
               />
             )}
           />
@@ -111,7 +105,7 @@ export default function SignupModal({
                 required
                 fullWidth
                 label="Public Maci Key"
-                value={pk}
+                defaultValue={pk}
               />
             )}
           />
@@ -120,7 +114,7 @@ export default function SignupModal({
           <Button
             onClick={() => {
               reset()
-              handleClose()
+              handleClose(poll)
             }}
             fullWidth
             variant="contained"

@@ -73,6 +73,7 @@ export default function Home() {
     fetchPolls(
       (res) => {
         if (mounted) {
+          console.log(res.data)
           let pollsObj = JSON.parse(res.data)
           console.log(pollsObj)
           if (pollsObj.constructor !== Array) {
@@ -176,7 +177,10 @@ export default function Home() {
                       onClick={() => {
                         //invoke new key creation
                         generateKeysAPI(
-                          (res) => setMaciKeyPairs(res.data),
+                          (res) => {
+                            console.log("maci keys are " + res.data)
+                            setMaciKeyPairs(res.data)
+                          },
                           (err) => {
                             console.log("key creation error: " + err)
                             throw new Error(err.message)
@@ -208,16 +212,13 @@ export default function Home() {
                     {/*</button>*/}
                   </div>
                   <SignupModal
-                    isOpen={poll.openSignUpModal}
                     onSubmit={() => {
                       signUpAPI
                     }}
-                    handleClose={() => {
+                    handleClose={(poll) => {
                       poll.openSignUpModal = false
                     }}
-                    pollName={poll.name}
-                    pollID={poll.pollID}
-                    pollAddress={poll.pollAddress}
+                    poll={poll}
                     pk={maciKeyPairs.pk}
                     sk={maciKeyPairs.sk}
                   ></SignupModal>
