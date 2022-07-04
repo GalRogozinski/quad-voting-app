@@ -7,17 +7,14 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 import { useForm, Controller } from "react-hook-form"
 
-import { Poll, SignUpOps } from "@models/poll"
+import { Poll } from "@models/poll"
+import { signUpAPI } from "@pages/_app"
 
 export default function SignupModal({
-  onSubmit,
-  handleClose,
   poll,
   sk,
   pk,
 }: {
-  onSubmit: (data: SignUpOps) => any
-  handleClose: (poll: Poll) => void
   poll: Poll
   sk: string
   pk: string
@@ -31,13 +28,30 @@ export default function SignupModal({
 
   const [registerError, setRegisterError] = React.useState("")
 
+  function onSubmit() {
+    signUpAPI(
+      { ivcp_data: "", sg_data: "", pub_key: pk },
+      (res) => {
+        handleClose()
+        alert("state index is " + res.data.stateID + " Please save it!")
+        window.localStorage.setItem("StateIndex", res.data.stateID)
+      },
+      (err) => {
+        console.log(err)
+        throw new Error(err.message)
+      }
+    )
+  }
+
+  const handleClose = () => {
+    poll.openSignUpModal = false
+  }
+
   return (
     <div className="popup-box">
       <Dialog
         open={poll.openSignUpModal}
-        onSubmit={handleSubmit(
-          onSubmit({ ivcpData: "", sgData: "", pubKey: pk })
-        )}
+        onSubmit={handleSubmit(() => onSubmit())}
       >
         <DialogTitle>Sign Up To Vote on Poll {poll.pollID}</DialogTitle>
         <DialogContent>
@@ -114,7 +128,7 @@ export default function SignupModal({
           <Button
             onClick={() => {
               reset()
-              handleClose(poll)
+              handleClose()
             }}
             fullWidth
             variant="contained"
@@ -124,9 +138,9 @@ export default function SignupModal({
           </Button>
           <Button
             name="Register"
-            onClick={handleSubmit(
-              onSubmit({ ivcpData: "", sgData: "", pubKey: pk })
-            )}
+            onClick={handleSubmit(() => {
+              onSubmit()
+            })}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

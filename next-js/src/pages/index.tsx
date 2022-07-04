@@ -9,7 +9,7 @@ import Link from "next/link"
 import NewPollModal from "@components/NewPollModal"
 import SignupModal from "@components/SignupModal"
 import { MaciKeyPair, Poll } from "@models/poll"
-import { fetchPolls, generateKeysAPI, signUpAPI } from "@pages/_app"
+import { fetchPolls, generateKeysAPI } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
 // import { Keypair, PCommand } from "quad-voting-maci/domainobjs"
 
@@ -212,12 +212,6 @@ export default function Home() {
                     {/*</button>*/}
                   </div>
                   <SignupModal
-                    onSubmit={() => {
-                      signUpAPI
-                    }}
-                    handleClose={(poll) => {
-                      poll.openSignUpModal = false
-                    }}
                     poll={poll}
                     pk={maciKeyPairs.pk}
                     sk={maciKeyPairs.sk}

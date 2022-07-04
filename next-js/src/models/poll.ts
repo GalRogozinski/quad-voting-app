@@ -23,11 +23,11 @@ export type Poll = {
 }
 
 export type SignUpOps = {
-  pubKey: string
+  pub_key: string
   //signup gatekeeper contract
-  sgData: string
+  sg_data: string
   //initial choice credit contract address
-  ivcpData: string
+  ivcp_data: string
 }
 
 export type PublishOps = {
