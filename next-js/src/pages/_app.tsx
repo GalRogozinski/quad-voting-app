@@ -10,8 +10,9 @@ import "../styles/tailwind.scss"
 import { PublishOps, SignUpOps } from "@models/poll"
 import config from "config.json"
 
-const SERVER_URL = `${config.server_url}:${config.server_port}`
-axios.defaults.baseURL = SERVER_URL
+const COORDINATOR_URL = `${config.server_url}:${config.server_port}`
+const PERSONAL_SERVER_URL = `${config.personal_server_url}:${config.personal_server_port}`
+
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8"
 axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*"
 
@@ -21,7 +22,7 @@ const fetchPolls = (
 ) => {
   console.log("Fetching polls")
   axios
-    .get(`maci/polls`)
+    .get(`${COORDINATOR_URL}/maci/polls`)
     .then((response) => resFunc(response))
     .catch((error) => errFunc(error))
 }
@@ -32,7 +33,17 @@ const signUpAPI = (
   errFunc: (err: AxiosError<any>) => void
 ) => {
   axios
-    .post(`maci/signup`, signUpOps)
+    .post(`${COORDINATOR_URL}/maci/signup`, signUpOps)
+    .then((response) => resFunc(response))
+    .catch((error) => errFunc(error))
+}
+
+const generateKeysAPI = (
+  resFunc: (res: AxiosResponse) => void,
+  errFunc: (err: AxiosError<any>) => void
+) => {
+  axios
+    .get(`${PERSONAL_SERVER_URL}/crypto/genKeys`)
     .then((response) => resFunc(response))
     .catch((error) => errFunc(error))
 }
@@ -43,7 +54,7 @@ const publishAPI = (
   errFunc: (err: AxiosError<any>) => void
 ) => {
   axios
-    .post(`maci/publishMessage`, publishOps)
+    .post(`${COORDINATOR_URL}/maci/publishMessage`, publishOps)
     .then((response) => resFunc(response))
     .catch((error) => errFunc(error))
 }
@@ -58,4 +69,4 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 }
 
 export default MyApp
-export { fetchPolls, signUpAPI }
+export { fetchPolls, signUpAPI, generateKeysAPI }

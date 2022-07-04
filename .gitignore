@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/next-js/node_modules
+personal-server/node_modules
 /.pnp
 .pnp.js
 

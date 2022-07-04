@@ -41,3 +41,8 @@ export type PublishOps = {
   newPubkey: string
   salt: string
 }
+
+export type MaciKeyPair = {
+  pk: string
+  sk: string
+}

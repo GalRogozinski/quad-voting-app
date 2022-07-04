@@ -1,5 +1,7 @@
 {
   "server_url": "http://quadvoting.twilightparadox.com",
   "server_port": "3001",
+  "personal_server_url": "http://localhost",
+  "personal_server_port": "4000",
   "maci" : "maci"
 }

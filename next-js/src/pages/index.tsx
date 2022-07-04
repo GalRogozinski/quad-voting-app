@@ -8,27 +8,18 @@ import Link from "next/link"
 // import { VerifierOpts, verifyClient } from "@cli/ts/verifyClient"
 import NewPollModal from "@components/NewPollModal"
 import SignupModal from "@components/SignupModal"
-import VoteModal from "@components/VoteModal"
-import { Keypair } from "@domainobjs"
-import { Poll } from "@models/poll"
-import { fetchPolls, signUpAPI } from "@pages/_app"
+import { MaciKeyPair, Poll } from "@models/poll"
+import { fetchPolls, generateKeysAPI, signUpAPI } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
 // import { Keypair, PCommand } from "quad-voting-maci/domainobjs"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
   const [polls, setPolls] = React.useState([] as Poll[])
-  const [maciSK, setMaciSK] = React.useState("")
-  const [maciPK, setMaciPK] = React.useState("")
+  const [maciKeyPairs, setMaciKeyPairs] = React.useState({} as MaciKeyPair)
   const { account, chainId, connector, error, provider } = useWeb3React()
   function cancelPoll() {
     setOpenPoll(false)
-  }
-
-  function generateKeyPairs() {
-    let keys = new Keypair()
-    setMaciSK(keys.privKey.serialize)
-    setMaciPK(keys.pubKey.serialize)
   }
 
   // function cryptoExperiment() {
@@ -60,6 +51,23 @@ export default function Home() {
     // setOpenPoll(false)
   }
 
+  // React.useEffect(() => {
+  //   let mounted = true
+  //   generateKeysAPI(
+  //     (res) => {
+  //       if (mounted) {
+  //         let keys = JSON.parse(res.data)
+  //         console.log(keys)
+  //         setMaciKeyPairs(keys)
+  //       }
+  //     },
+  //     (err) => {
+  //       console.error(err)
+  //       throw new Error(err.stack)
+  //     }
+  //   )
+  // }, [maciKeyPairs])
+
   React.useEffect(() => {
     let mounted = true
     fetchPolls(
@@ -81,7 +89,7 @@ export default function Home() {
     return () => {
       mounted = false
     }
-  })
+  }, [])
 
   return (
     <div>
@@ -166,30 +174,38 @@ export default function Home() {
                       style={{ padding: "5px", marginRight: "10px" }}
                       type="button"
                       onClick={() => {
-                        generateKeyPairs()
+                        //invoke new key creation
+                        generateKeysAPI(
+                          (res) => setMaciKeyPairs(res.data),
+                          (err) => {
+                            console.log("key creation error: " + err)
+                            throw new Error(err.message)
+                          }
+                        )
+                        // setMaciKeyPairs({ pk: "", sk: "" })
                         poll.openSignUpModal = true
                       }}
                     >
                       Sign Up
                     </button>
-                    <button
-                      style={{ padding: "5px", marginRight: "10px" }}
-                      type="button"
-                      onClick={() => {
-                        poll.openVoteModal = true
-                      }}
-                    >
-                      Vote Fairly!
-                    </button>
-                    <button
-                      style={{ padding: "5px", marginRight: "10px" }}
-                      type="button"
-                      onClick={() => {
-                        poll.openResultsModal = true
-                      }}
-                    >
-                      Show results and Verify!
-                    </button>
+                    {/*<button*/}
+                    {/*  style={{ padding: "5px", marginRight: "10px" }}*/}
+                    {/*  type="button"*/}
+                    {/*  onClick={() => {*/}
+                    {/*    poll.openVoteModal = true*/}
+                    {/*  }}*/}
+                    {/*>*/}
+                    {/*  Vote Fairly!*/}
+                    {/*</button>*/}
+                    {/*<button*/}
+                    {/*  style={{ padding: "5px", marginRight: "10px" }}*/}
+                    {/*  type="button"*/}
+                    {/*  onClick={() => {*/}
+                    {/*    poll.openResultsModal = true*/}
+                    {/*  }}*/}
+                    {/*>*/}
+                    {/*  Show results and Verify!*/}
+                    {/*</button>*/}
                   </div>
                   <SignupModal
                     isOpen={poll.openSignUpModal}
@@ -202,14 +218,14 @@ export default function Home() {
                     pollName={poll.name}
                     pollID={poll.pollID}
                     pollAddress={poll.pollAddress}
-                    pk={maciPK}
-                    sk={maciSK}
+                    pk={maciKeyPairs.pk}
+                    sk={maciKeyPairs.sk}
                   ></SignupModal>
-                  <VoteModal
-                    isOpen={poll.openSignUpModal}
-                    poll={poll}
-                    onSubmit={(poll) => {}}
-                  ></VoteModal>
+                  {/*<VoteModal*/}
+                  {/*  isOpen={poll.openSignUpModal}*/}
+                  {/*  poll={poll}*/}
+                  {/*  onSubmit={(poll) => {}}*/}
+                  {/*></VoteModal>*/}
                 </div>
               ))}
             </div>
