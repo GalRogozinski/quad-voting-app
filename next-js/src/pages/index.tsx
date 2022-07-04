@@ -8,11 +8,11 @@ import Link from "next/link"
 // import { VerifierOpts, verifyClient } from "@cli/ts/verifyClient"
 import NewPollModal from "@components/NewPollModal"
 import SignupModal from "@components/SignupModal"
+import VoteModal from "@components/VoteModal"
 import { Keypair } from "@domainobjs"
 import { Poll } from "@models/poll"
 import { fetchPolls, signUpAPI } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
-import VoteModal from "@components/VoteModal";
 // import { Keypair, PCommand } from "quad-voting-maci/domainobjs"
 
 export default function Home() {
@@ -145,32 +145,52 @@ export default function Home() {
             </section>
             <div>
               {polls.map((poll) => (
-                <div key="poll" className="container">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      generateKeyPairs()
-                      poll.openSignUpModal = true
-                    }}
+                <div
+                  key="poll"
+                  className="container"
+                  style={{
+                    padding: "15px",
+                    background: "white",
+                    width: "500px",
+                    textAlign: "center",
+                    marginTop: "15px",
+                  }}
+                >
+                  <div
+                    style={{ fontFamily: "Helvetica", marginBottom: "15px" }}
                   >
-                    Sign Up
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      poll.openVoteModal = true
-                    }}
-                  >
-                    Vote Fairly!
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      poll.openResultsModal = true
-                    }}
-                  >
-                    Show results and Verify!
-                  </button>
+                    Fun Poll
+                  </div>
+                  <div>
+                    <button
+                      style={{ padding: "5px", marginRight: "10px" }}
+                      type="button"
+                      onClick={() => {
+                        generateKeyPairs()
+                        poll.openSignUpModal = true
+                      }}
+                    >
+                      Sign Up
+                    </button>
+                    <button
+                      style={{ padding: "5px", marginRight: "10px" }}
+                      type="button"
+                      onClick={() => {
+                        poll.openVoteModal = true
+                      }}
+                    >
+                      Vote Fairly!
+                    </button>
+                    <button
+                      style={{ padding: "5px", marginRight: "10px" }}
+                      type="button"
+                      onClick={() => {
+                        poll.openResultsModal = true
+                      }}
+                    >
+                      Show results and Verify!
+                    </button>
+                  </div>
                   <SignupModal
                     isOpen={poll.openSignUpModal}
                     onSubmit={() => {
@@ -185,7 +205,11 @@ export default function Home() {
                     pk={maciPK}
                     sk={maciSK}
                   ></SignupModal>
-                  <VoteModal isOpen={poll.openSignUpModal} poll={poll} onSubmit={}}
+                  <VoteModal
+                    isOpen={poll.openSignUpModal}
+                    poll={poll}
+                    onSubmit={(poll) => {}}
+                  ></VoteModal>
                 </div>
               ))}
             </div>
