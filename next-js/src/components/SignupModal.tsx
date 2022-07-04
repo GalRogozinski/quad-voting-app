@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
-import { useForm, Controller } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
 import { Poll } from "@models/poll"
 import { signUpAPI } from "@pages/_app"
@@ -20,7 +20,6 @@ export default function SignupModal({
   pk: string
 }) {
   const {
-    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -58,70 +57,42 @@ export default function SignupModal({
           <DialogContentText>
             You must register before you can vote
           </DialogContentText>
-          <Controller
-            name="pollName"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                fullWidth
-                defaultValue={poll.poll_name}
-                label="Poll Name"
-                inputProps={{ readOnly: true }}
-              />
-            )}
+          <TextField
+            margin="normal"
+            fullWidth
+            defaultValue={poll.poll_name}
+            label="Poll Name"
+            inputProps={{ readOnly: true }}
           />
-          <Controller
-            name="pollID"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                fullWidth
-                defaultValue={poll.pollID}
-                label="Poll ID"
-                inputProps={{ readOnly: true }}
-              />
-            )}
+          <TextField
+            margin="normal"
+            fullWidth
+            defaultValue={poll.pollID}
+            label="Poll ID"
+            inputProps={{ readOnly: true }}
           />
-          <Controller
-            name="pollAddress"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                label="Poll Address"
-                defaultValue={poll.pollAddr}
-                fullWidth
-                inputProps={{ readOnly: true }}
-              />
-            )}
+          <TextField
+            margin="normal"
+            label="Poll Address"
+            defaultValue={poll.pollAddr}
+            fullWidth
+            inputProps={{ readOnly: true }}
           />
-          <Controller
-            name="sk"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                label="Secret Maci Key"
-                defaultValue={sk}
-              />
-            )}
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Secret Maci Key"
+            defaultValue={sk}
+            inputProps={{ readOnly: true }}
           />
-          <Controller
-            name="pk"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                label="Public Maci Key"
-                defaultValue={pk}
-              />
-            )}
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Public Maci Key"
+            defaultValue={pk}
+            inputProps={{ readOnly: true }}
           />
         </DialogContent>
         <DialogActions>
