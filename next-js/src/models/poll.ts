@@ -5,11 +5,11 @@
 export type Poll = {
   //contract info
   pollID: number
-  pollAddress: string
+  pollAddr: string
   maciAddress: string
 
   //user input
-  name: string
+  poll_name: string
   description: string
   expirationDate: Date
   voteOptions: string[]

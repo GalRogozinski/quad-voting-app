@@ -9,7 +9,7 @@ cryptoRouter.get('/genKeys', async (req, res, next) => {
   try {
     const keys = new Keypair();
     res.json({
-      sk: keys.privKey.serialize, pk: keys.pubKey.serialize,
+      sk: keys.privKey.serialize(), pk: keys.pubKey.serialize(),
     });
   } catch (e) {
     next(e);
