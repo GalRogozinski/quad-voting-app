@@ -12,7 +12,7 @@ export type Poll = {
   poll_name: string
   description: string
   expirationDate: Date
-  voteOptions: string[]
+  vote_options: string[]
   //tally
   newTallCommitment: string
   tally: number[]
@@ -35,7 +35,7 @@ export type PublishOps = {
   privKey: string
   pubKey: string
   maciAddress: string
-  stateIndex: number
+  stateID: number
   voteOptionIndex: number
   nonce: number
   newPubkey: string

@@ -10,20 +10,9 @@ import { useForm, Controller } from "react-hook-form"
 import * as yup from "yup"
 
 import { Poll, PublishOps } from "@models/poll"
+import { publishAPI } from "@pages/_app"
 
-const onSubmit = (data: any, poll: Poll) => {
-  const voteOpts: PublishOps = data
-}
-
-export default function VoteModal({
-  isOpen = false,
-  poll,
-  onSubmit,
-}: {
-  isOpen: boolean
-  poll: Poll
-  onSubmit: (data: any) => void
-}) {
+export default function VoteModal({ poll }: { poll: Poll }) {
   const schema = yup
     .object({
       proposal: yup.string().required(),
@@ -40,10 +29,40 @@ export default function VoteModal({
     resolver: yupResolver(schema),
   })
 
+  const onSubmit = (data: any) => {
+    console.log("vote")
+    console.log(data)
+    const publishOps: PublishOps = {
+      pollID: poll.pollID,
+      maciAddress: poll.maciAddress,
+      nonce: data.nonce,
+      salt: data.salt,
+      stateID: data.stateID,
+      voteOptionIndex: data.voteOptionIndex,
+      pubKey: data.pubKey,
+      privKey: data.privKey,
+      newPubkey: data.newPubkey,
+    }
+
+    publishAPI(
+      publishOps,
+      (res) => {
+        alert(res.data.receipt)
+      },
+      (err) => {
+        console.error(err)
+        throw new Error(err.message)
+      }
+    )
+  }
+
   return (
     <div className="popup-box">
-      <Dialog open={isOpen} onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle>{poll.name}</DialogTitle>
+      <Dialog
+        open={poll.openVoteModal}
+        onSubmit={handleSubmit((data) => onSubmit(data))}
+      >
+        <DialogTitle>{poll.poll_name}</DialogTitle>
         <DialogContent>
           <DialogContentText>{poll.description}</DialogContentText>
           <Controller
@@ -73,8 +92,10 @@ export default function VoteModal({
                 value={value || ""}
                 onChange={onChange}
               >
-                {poll.voteOptions.map((option, index) => (
-                  <MenuItem value={option} key={index}></MenuItem>
+                {poll.vote_options.map((option, index) => (
+                  <MenuItem value={option} key={index}>
+                    {option}
+                  </MenuItem>
                 ))}
               </Select>
             )}
@@ -94,7 +115,7 @@ export default function VoteModal({
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit(onSubmit)}
+            onClick={handleSubmit((data) => onSubmit(data))}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

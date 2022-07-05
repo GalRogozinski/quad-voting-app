@@ -69,4 +69,4 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 }
 
 export default MyApp
-export { fetchPolls, signUpAPI, generateKeysAPI }
+export { fetchPolls, signUpAPI, publishAPI, generateKeysAPI }

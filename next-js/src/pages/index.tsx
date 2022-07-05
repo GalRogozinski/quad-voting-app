@@ -8,6 +8,7 @@ import Link from "next/link"
 // import { VerifierOpts, verifyClient } from "@cli/ts/verifyClient"
 import NewPollModal from "@components/NewPollModal"
 import SignupModal from "@components/SignupModal"
+import VoteModal from "@components/VoteModal"
 import { MaciKeyPair, Poll } from "@models/poll"
 import { fetchPolls, generateKeysAPI } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
@@ -192,15 +193,15 @@ export default function Home() {
                     >
                       Sign Up
                     </button>
-                    {/*<button*/}
-                    {/*  style={{ padding: "5px", marginRight: "10px" }}*/}
-                    {/*  type="button"*/}
-                    {/*  onClick={() => {*/}
-                    {/*    poll.openVoteModal = true*/}
-                    {/*  }}*/}
-                    {/*>*/}
-                    {/*  Vote Fairly!*/}
-                    {/*</button>*/}
+                    <button
+                      style={{ padding: "5px", marginRight: "10px" }}
+                      type="button"
+                      onClick={() => {
+                        poll.openVoteModal = true
+                      }}
+                    >
+                      Vote Fairly!
+                    </button>
                     {/*<button*/}
                     {/*  style={{ padding: "5px", marginRight: "10px" }}*/}
                     {/*  type="button"*/}
@@ -211,16 +212,16 @@ export default function Home() {
                     {/*  Show results and Verify!*/}
                     {/*</button>*/}
                   </div>
-                  <SignupModal
-                    poll={poll}
-                    pk={maciKeyPairs.pk}
-                    sk={maciKeyPairs.sk}
-                  ></SignupModal>
-                  {/*<VoteModal*/}
-                  {/*  isOpen={poll.openSignUpModal}*/}
-                  {/*  poll={poll}*/}
-                  {/*  onSubmit={(poll) => {}}*/}
-                  {/*></VoteModal>*/}
+                  <div>
+                    <SignupModal
+                      poll={poll}
+                      pk={maciKeyPairs.pk}
+                      sk={maciKeyPairs.sk}
+                    ></SignupModal>
+                  </div>
+                  <div>
+                    <VoteModal poll={poll}></VoteModal>
+                  </div>
                 </div>
               ))}
             </div>
