@@ -202,15 +202,15 @@ export default function Home() {
                     >
                       Vote Fairly!
                     </button>
-                    {/*<button*/}
-                    {/*  style={{ padding: "5px", marginRight: "10px" }}*/}
-                    {/*  type="button"*/}
-                    {/*  onClick={() => {*/}
-                    {/*    poll.openResultsModal = true*/}
-                    {/*  }}*/}
-                    {/*>*/}
-                    {/*  Show results and Verify!*/}
-                    {/*</button>*/}
+                    <button
+                      style={{ padding: "5px", marginRight: "10px" }}
+                      type="button"
+                      onClick={() => {
+                        poll.openResultsModal = true
+                      }}
+                    >
+                      Show results and Verify!
+                    </button>
                   </div>
                   <div>
                     <SignupModal

@@ -42,7 +42,7 @@ export default function ResultsModal({
       <Dialog
         open={isOpen}
         onSubmit={handleSubmit(
-          onSubmit({ ivcpData: "", sgData: "", pubKey: pk })
+          onSubmit({ ivcp_data: "", sg_data: "", pub_key: pk })
         )}
       >
         <DialogTitle>Sign Up To Vote on Poll {pollID}</DialogTitle>
@@ -131,7 +131,7 @@ export default function ResultsModal({
           <Button
             name="Register"
             onClick={handleSubmit(
-              onSubmit({ ivcpData: "", sgData: "", pubKey: pk })
+              onSubmit({ ivcp_data: "", sg_data: "", pub_key: pk })
             )}
             fullWidth
             variant="contained"
