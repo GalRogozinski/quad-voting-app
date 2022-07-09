@@ -17,7 +17,7 @@ export type Poll = {
   newTallCommitment: string
   tally: number[]
   //UI helpers
-  openSignUpModal: boolean
+  open: boolean
   openVoteModal: boolean
   openResultsModal: boolean
 }

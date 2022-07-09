@@ -17,6 +17,13 @@ import ConnectWeb3 from "@pages/connect"
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
   const [polls, setPolls] = React.useState([] as Poll[])
+  const [poll, setPoll] = React.useState({} as Poll)
+  const [openSignUpModal, setOpenSignUpModal] = React.useState(false)
+  const [openVoteModal, setOpenVoteModal] = React.useState(false)
+  const [openResultsModal, setOpenResultsModal] = React.useState(false)
+
+
+
   const [maciKeyPairs, setMaciKeyPairs] = React.useState({} as MaciKeyPair)
   const { account, chainId, connector, error, provider } = useWeb3React()
   function cancelPoll() {
@@ -176,6 +183,7 @@ export default function Home() {
                       style={{ padding: "5px", marginRight: "10px" }}
                       type="button"
                       onClick={() => {
+                        setPoll(poll)
                         //invoke new key creation
                         generateKeysAPI(
                           (res) => {
@@ -187,8 +195,8 @@ export default function Home() {
                             throw new Error(err.message)
                           }
                         )
+                        setOpenSignUpModal(true)
                         // setMaciKeyPairs({ pk: "", sk: "" })
-                        poll.openSignUpModal = true
                       }}
                     >
                       Sign Up
@@ -197,7 +205,8 @@ export default function Home() {
                       style={{ padding: "5px", marginRight: "10px" }}
                       type="button"
                       onClick={() => {
-                        poll.openVoteModal = true
+                        setPoll(poll)
+                        setOpenVoteModal(true)
                       }}
                     >
                       Vote Fairly!
@@ -206,24 +215,36 @@ export default function Home() {
                       style={{ padding: "5px", marginRight: "10px" }}
                       type="button"
                       onClick={() => {
-                        poll.openResultsModal = true
+                        setPoll(poll)
+                        setOpenResultsModal(true)
                       }}
                     >
                       Show results and Verify!
                     </button>
                   </div>
-                  <div>
+                </div>
+              ))}
+              <div>
                     <SignupModal
                       poll={poll}
+                      open = {openSignUpModal}
+                      handleClose = {() => {
+                        setOpenSignUpModal(false)
+                        }
+                      }
                       pk={maciKeyPairs.pk}
                       sk={maciKeyPairs.sk}
                     ></SignupModal>
                   </div>
                   <div>
-                    <VoteModal poll={poll}></VoteModal>
+                    <VoteModal 
+                    poll={poll}
+                    isOpen = {openVoteModal}
+                    handleClose = {() => {
+                     setOpenVoteModal(false)
+                      }
+                    }/>
                   </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>

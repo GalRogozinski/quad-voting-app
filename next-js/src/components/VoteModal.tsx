@@ -12,7 +12,10 @@ import * as yup from "yup"
 import { Poll, PublishOps } from "@models/poll"
 import { publishAPI } from "@pages/_app"
 
-export default function VoteModal({ poll }: { poll: Poll }) {
+export default function VoteModal(
+  { poll, isOpen, handleClose }: { poll: Poll, isOpen: boolean, handleClose: Function }
+
+  ) {
   const schema = yup
     .object({
       proposal: yup.string().required(),
@@ -59,7 +62,7 @@ export default function VoteModal({ poll }: { poll: Poll }) {
   return (
     <div className="popup-box">
       <Dialog
-        open={poll.openVoteModal}
+        open={isOpen}
         onSubmit={handleSubmit((data) => onSubmit(data))}
       >
         <DialogTitle>{poll.poll_name}</DialogTitle>
@@ -106,7 +109,7 @@ export default function VoteModal({ poll }: { poll: Poll }) {
           <Button
             onClick={() => {
               reset()
-              poll.openVoteModal = false
+              handleClose()
             }}
             fullWidth
             variant="contained"

@@ -12,10 +12,14 @@ import { signUpAPI } from "@pages/_app"
 
 export default function SignupModal({
   poll,
+  open,
+  handleClose,
   sk,
   pk,
 }: {
   poll: Poll
+  open: boolean
+  handleClose: Function
   sk: string
   pk: string
 }) {
@@ -42,14 +46,10 @@ export default function SignupModal({
     )
   }
 
-  const handleClose = () => {
-    poll.openSignUpModal = false
-  }
-
   return (
     <div className="popup-box">
       <Dialog
-        open={poll.openSignUpModal}
+        open={open}
         onSubmit={handleSubmit(() => onSubmit())}
       >
         <DialogTitle>Sign Up To Vote on Poll {poll.pollID}</DialogTitle>
