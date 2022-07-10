@@ -92,7 +92,7 @@ export default function Home() {
       },
       (err) => {
         console.error(err)
-        throw new Error(err.stack)
+        throw new Error(err.message)
       }
     )
     return () => {

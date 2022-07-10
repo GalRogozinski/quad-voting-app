@@ -8,6 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 import { useForm, Controller } from "react-hook-form"
 import * as yup from "yup"
+import {genRandomSalt} from "maci-crypto"
 
 import { Poll, PublishOps } from "@models/poll"
 import { publishAPI } from "@pages/_app"
@@ -31,6 +32,18 @@ export default function VoteModal(
   } = useForm({
     resolver: yupResolver(schema),
   })
+
+  const getNonce = () => {
+    const lastNonce: number = Number(window.localStorage.getItem("lastNonce"))
+    if (lastNonce) {
+      return lastNonce + 1
+    }
+    return 1
+  }
+
+  const generateSalt = () => {
+    genRandomSalt()
+  }
 
   const onSubmit = (data: any) => {
     console.log("vote")
@@ -75,7 +88,7 @@ export default function VoteModal(
               <TextField
                 label="Poll closing time"
                 type="datetime-local"
-                value={poll.expirationDate}
+                defaultValue={poll.expirationDate}
                 sx={{ width: 250 }}
                 InputLabelProps={{
                   shrink: true,
