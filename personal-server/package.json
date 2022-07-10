@@ -2,9 +2,8 @@
   "name": "personal-server",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "start": "node bin/www.js",
+    "start": "node bin/www.js.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT License",
@@ -17,6 +16,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.1.0",
     "eslint": ">=5.16.0",
     "eslint-config-google": "^0.14.0"
   }

@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import cors from 'cors';
-import {cryptoRouter} from './routes/crypto.js';
+import {cryptoRouter} from './routes/crypto.mjs';
 
 
 const app = express();

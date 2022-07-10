@@ -1,6 +1,6 @@
 import express from 'express';
 import {Keypair} from '../quad-voting-maci/domainobjs/build/index.js';
-import {verifyClient} from '../quad-voting-maci/cli/build/verifyClient'
+import {verifyClient} from '../quad-voting-maci/cli/build/verifyClient.js'
 
 // eslint-disable-next-line new-cap
 export const cryptoRouter = express.Router();
@@ -20,6 +20,7 @@ cryptoRouter.get('/genKeys', async (req, res, next) => {
 
 cryptoRouter.get('/verify', async(req, res, next) => {
   try {
+  
   result = verifyClient(req.body)
   res.json({"result": result})
   }
