@@ -39,7 +39,10 @@ export type PublishOps = {
   voteOptionIndex: number
   nonce: number
   newPubkey: string
+  newVoteWeight: number
   salt: string
+  signatureR8: any
+  signatueS: any
 }
 
 export type MaciKeyPair = {

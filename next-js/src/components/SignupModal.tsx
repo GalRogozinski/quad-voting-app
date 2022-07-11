@@ -38,6 +38,8 @@ export default function SignupModal({
         handleClose()
         alert("state index is " + res.data.stateID + " Please save it!")
         window.localStorage.setItem("StateIndex", res.data.stateID)
+        window.localStorage.setItem("maciPK", pk)
+        window.localStorage.setItem("maciSK", sk)
       },
       (err) => {
         console.log(err)
@@ -48,10 +50,7 @@ export default function SignupModal({
 
   return (
     <div className="popup-box">
-      <Dialog
-        open={open}
-        onSubmit={handleSubmit(() => onSubmit())}
-      >
+      <Dialog open={open} onSubmit={handleSubmit(() => onSubmit())}>
         <DialogTitle>Sign Up To Vote on Poll {poll.pollID}</DialogTitle>
         <DialogContent>
           <DialogContentText>
