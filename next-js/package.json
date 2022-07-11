@@ -29,8 +29,6 @@
     "http": false,
     "https": false,
     "constants": false,
-    "crypto": false,
-    "crypto-js": false,
     "circomlib": false
   },
   "dependencies": {
@@ -58,6 +56,8 @@
     "electron": "^19.0.6",
     "ethers": "^5.5.4",
     "fs": "^0.0.1-security",
+    "maci-crypto": "^1.0.4",
+    "maci-domainobjs": "^1.0.4",
     "net": "^1.0.2",
     "next": "12.1.0",
     "next-with-polyfill": "^0.1.5",
