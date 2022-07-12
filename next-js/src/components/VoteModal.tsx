@@ -79,8 +79,8 @@ export default function VoteModal({
       privKey: data.privKey,
       newVoteWeight: 1, //TODO: find how to assignt this value
       newPubkey: data.newPubkey,
-      SignatureR8: stringifyBigInts(signature.R8).join(),
-      SignatureS: stringifyBigInts(signature.S),
+      signatureR8: stringifyBigInts(signature.R8).join(),
+      signatureS: stringifyBigInts(signature.S),
     }
 
     publishAPI(

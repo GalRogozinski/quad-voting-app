@@ -42,7 +42,7 @@ export type PublishOps = {
   newVoteWeight: number
   salt: string
   signatureR8: any
-  signatueS: any
+  signatureS: any
 }
 
 export type MaciKeyPair = {
