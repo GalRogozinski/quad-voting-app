@@ -139,26 +139,12 @@ export default function VoteModal({
                 margin="normal"
                 required
                 fullWidth
-                label="Public Maci Key"
+                label="Private Maci Key"
                 defaultValue={window.localStorage.getItem("maciSK")}
               />
             )}
           />
-          <p>{errors.privKey.message}</p>
-          <Controller
-            name="privkey"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                label="Public Maci Key"
-                defaultValue={window.localStorage.getItem("maciSK")}
-              />
-            )}
-          />
-          <p>{errors.privkey?.message}</p>
+          <p>{errors.privKey?.message}</p>
           <Controller
             name="stateIndex"
             control={control}
@@ -235,7 +221,11 @@ export default function VoteModal({
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit((data) => onSubmit(data))}
+            onClick={handleSubmit((data) => {
+              onSubmit(data)
+              reset()
+              handleClose()
+            })}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
