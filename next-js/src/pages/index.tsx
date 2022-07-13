@@ -2,6 +2,7 @@ import "react-app-polyfill/stable"
 import React from "react"
 
 import { useWeb3React } from "@web3-react/core"
+import { Keypair } from "maci-domainobjs"
 import Head from "next/head"
 import Link from "next/link"
 
@@ -10,9 +11,8 @@ import NewPollModal from "@components/NewPollModal"
 import SignupModal from "@components/SignupModal"
 import VoteModal from "@components/VoteModal"
 import { MaciKeyPair, Poll } from "@models/poll"
-import { fetchPolls, generateKeysAPI } from "@pages/_app"
+import { fetchPolls } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
-// import { Keypair, PCommand } from "quad-voting-maci/domainobjs"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
@@ -22,31 +22,12 @@ export default function Home() {
   const [openVoteModal, setOpenVoteModal] = React.useState(false)
   const [openResultsModal, setOpenResultsModal] = React.useState(false)
 
-
-
-  const [maciKeyPairs, setMaciKeyPairs] = React.useState({} as MaciKeyPair)
+  const [maciKeyPair, setMaciKeyPair] = React.useState({} as MaciKeyPair)
   const { account, chainId, connector, error, provider } = useWeb3React()
   function cancelPoll() {
     setOpenPoll(false)
   }
 
-  // function cryptoExperiment() {
-  //   let keypair = new Keypair()
-  //   const command: PCommand = new PCommand(
-  //     BigInt(1),
-  //     keypair.pubKey,
-  //     BigInt(0),
-  //     BigInt(1),
-  //     BigInt(1),
-  //     BigInt(1),
-  //     BigInt(1)
-  //   )
-  //   const signature = command.sign(keypair.privKey)
-  //   const message = command.encrypt(
-  //     signature,
-  //     Keypair.genEcdhSharedKey(keypair.privKey, keypair.pubKey)
-  //   )
-  // }
   function createPoll(data: any) {
     // let poll = {} as Poll
     // poll = Object.assign(poll, data)
@@ -99,6 +80,15 @@ export default function Home() {
       mounted = false
     }
   }, [])
+
+  function genKeyPair(): MaciKeyPair {
+    const keys = new Keypair()
+    const keyPair = {
+      sk: keys.privKey.serialize(),
+      pk: keys.pubKey.serialize(),
+    }
+    return keyPair
+  }
 
   return (
     <div>
@@ -185,16 +175,8 @@ export default function Home() {
                       onClick={() => {
                         setPoll(poll)
                         //invoke new key creation
-                        generateKeysAPI(
-                          (res) => {
-                            console.log("maci keys are " + res.data)
-                            setMaciKeyPairs(res.data)
-                          },
-                          (err) => {
-                            console.log("key creation error: " + err)
-                            throw new Error(err.message)
-                          }
-                        )
+                        const keyPair = genKeyPair()
+                        setMaciKeyPair(keyPair)
                         setOpenSignUpModal(true)
                         // setMaciKeyPairs({ pk: "", sk: "" })
                       }}
@@ -225,26 +207,25 @@ export default function Home() {
                 </div>
               ))}
               <div>
-                    <SignupModal
-                      poll={poll}
-                      open = {openSignUpModal}
-                      handleClose = {() => {
-                        setOpenSignUpModal(false)
-                        }
-                      }
-                      pk={maciKeyPairs.pk}
-                      sk={maciKeyPairs.sk}
-                    ></SignupModal>
-                  </div>
-                  <div>
-                    <VoteModal 
-                    poll={poll}
-                    isOpen = {openVoteModal}
-                    handleClose = {() => {
-                     setOpenVoteModal(false)
-                      }
-                    }/>
-                  </div>
+                <SignupModal
+                  poll={poll}
+                  open={openSignUpModal}
+                  handleClose={() => {
+                    setOpenSignUpModal(false)
+                  }}
+                  pk={maciKeyPair.pk}
+                  sk={maciKeyPair.sk}
+                ></SignupModal>
+              </div>
+              <div>
+                <VoteModal
+                  poll={poll}
+                  isOpen={openVoteModal}
+                  handleClose={() => {
+                    setOpenVoteModal(false)
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>

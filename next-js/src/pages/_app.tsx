@@ -38,16 +38,6 @@ const signUpAPI = (
     .catch((error) => errFunc(error))
 }
 
-const generateKeysAPI = (
-  resFunc: (res: AxiosResponse) => void,
-  errFunc: (err: AxiosError<any>) => void
-) => {
-  axios
-    .get(`${PERSONAL_SERVER_URL}/crypto/genKeys`)
-    .then((response) => resFunc(response))
-    .catch((error) => errFunc(error))
-}
-
 const publishAPI = (
   publishOps: PublishOps,
   resFunc: (res: AxiosResponse) => void,
@@ -69,4 +59,4 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 }
 
 export default MyApp
-export { fetchPolls, signUpAPI, publishAPI, generateKeysAPI }
+export { fetchPolls, signUpAPI, publishAPI }

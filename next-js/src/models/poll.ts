@@ -46,6 +46,6 @@ export type PublishOps = {
 }
 
 export type MaciKeyPair = {
-  pk: string
   sk: string
+  pk: string
 }

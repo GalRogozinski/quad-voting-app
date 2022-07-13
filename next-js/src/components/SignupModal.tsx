@@ -37,7 +37,7 @@ export default function SignupModal({
       (res) => {
         handleClose()
         alert("state index is " + res.data.stateID + " Please save it!")
-        window.localStorage.setItem("StateIndex", res.data.stateID)
+        window.localStorage.setItem("stateIndex", res.data.stateID)
         window.localStorage.setItem("maciPK", pk)
         window.localStorage.setItem("maciSK", sk)
       },
@@ -110,6 +110,8 @@ export default function SignupModal({
             name="Register"
             onClick={handleSubmit(() => {
               onSubmit()
+              reset()
+              handleClose()
             })}
             fullWidth
             variant="contained"

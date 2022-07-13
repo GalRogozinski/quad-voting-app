@@ -11,7 +11,7 @@ import {
   stringifyBigInts,
   unstringifyBigInts,
 } from "maci-crypto"
-import { Command } from "maci-domainobjs"
+import { Command, PubKey } from "maci-domainobjs"
 import { useForm, Controller } from "react-hook-form"
 import * as yup from "yup"
 
@@ -29,7 +29,7 @@ export default function VoteModal({
 }) {
   const schema = yup
     .object({
-      proposal: yup.string().required(),
+      // proposal: yup.string().required(),
       // expiration: yup.date.apply(),
       // address: yup.string().required(),
     })
@@ -57,13 +57,13 @@ export default function VoteModal({
 
   const onSubmit = (data: any) => {
     console.log("vote")
-    console.log(data)
+    console.log("print date: " + data)
     const command: Command = new Command(
-      data.stateIndex,
-      data.pubKey,
-      data.voteOptionIndex,
+      BigInt(data.stateIndex),
+      PubKey.unserialize(data.pubKey),
+      BigInt(data.voteOptionIndex),
       BigInt(1),
-      data.nonce,
+      BigInt(data.nonce),
       BigInt(poll.pollID),
       unstringifyBigInts(data.salt)
     )
@@ -176,12 +176,13 @@ export default function VoteModal({
           <Controller
             name="salt"
             control={control}
-            render={({ field: { value } }) => (
+            render={({ field: { onChange, value } }) => (
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 label="Salt"
+                onChange={onChange}
                 defaultValue={generateSalt()}
               />
             )}
@@ -221,11 +222,17 @@ export default function VoteModal({
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit((data) => {
-              onSubmit(data)
-              reset()
-              handleClose()
-            })}
+            onClick={handleSubmit(
+              (data) => {
+                onSubmit(data)
+                reset()
+                handleClose()
+              },
+              (err) => {
+                console.error(err)
+                throw new Error(err.message)
+              }
+            )}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
