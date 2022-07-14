@@ -7,21 +7,18 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 import { useForm } from "react-hook-form"
 
-import { Poll } from "@models/poll"
+import { MaciKeyPair, Poll } from "@models/poll"
 import { signUpAPI } from "@pages/_app"
+import { genKeyPair } from "@utils"
 
 export default function SignupModal({
   poll,
   open,
   handleClose,
-  sk,
-  pk,
 }: {
   poll: Poll
   open: boolean
   handleClose: Function
-  sk: string
-  pk: string
 }) {
   const {
     handleSubmit,
@@ -30,22 +27,31 @@ export default function SignupModal({
   } = useForm()
 
   const [registerError, setRegisterError] = React.useState("")
+  const [maciKeyPair, setMaciKeyPair] = React.useState(genKeyPair())
+
 
   function onSubmit() {
     signUpAPI(
-      { ivcp_data: "", sg_data: "", pub_key: pk },
+      { ivcp_data: "", sg_data: "", pub_key: maciKeyPair.pk },
       (res) => {
         handleClose()
         alert("state index is " + res.data.stateID + " Please save it!")
-        window.localStorage.setItem("stateIndex", res.data.stateID)
-        window.localStorage.setItem("maciPK", pk)
-        window.localStorage.setItem("maciSK", sk)
+        window.localStorage.setItem("stateIndex" + poll.pollID, res.data.stateID)
+        window.localStorage.setItem("maciPK" + poll.pollID, maciKeyPair.pk)
+        window.localStorage.setItem("maciSK" + poll.pollID, maciKeyPair.sk)
       },
       (err) => {
         console.log(err)
         throw new Error(err.message)
       }
     )
+  }
+
+
+  function closeDialogue() {
+    reset()
+    handleClose()
+    setMaciKeyPair(genKeyPair())
   }
 
   return (
@@ -82,7 +88,7 @@ export default function SignupModal({
             required
             fullWidth
             label="Secret Maci Key"
-            defaultValue={sk}
+            defaultValue={maciKeyPair.sk}
             inputProps={{ readOnly: true }}
           />
           <TextField
@@ -90,15 +96,14 @@ export default function SignupModal({
             required
             fullWidth
             label="Public Maci Key"
-            defaultValue={pk}
+            defaultValue={maciKeyPair.pk}
             inputProps={{ readOnly: true }}
           />
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
-              reset()
-              handleClose()
+              closeDialogue()
             }}
             fullWidth
             variant="contained"
@@ -110,8 +115,7 @@ export default function SignupModal({
             name="Register"
             onClick={handleSubmit(() => {
               onSubmit()
-              reset()
-              handleClose()
+              closeDialogue()
             })}
             fullWidth
             variant="contained"

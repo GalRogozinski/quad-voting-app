@@ -22,7 +22,6 @@ export default function Home() {
   const [openVoteModal, setOpenVoteModal] = React.useState(false)
   const [openResultsModal, setOpenResultsModal] = React.useState(false)
 
-  const [maciKeyPair, setMaciKeyPair] = React.useState({} as MaciKeyPair)
   const { account, chainId, connector, error, provider } = useWeb3React()
   function cancelPoll() {
     setOpenPoll(false)
@@ -80,15 +79,6 @@ export default function Home() {
       mounted = false
     }
   }, [])
-
-  function genKeyPair(): MaciKeyPair {
-    const keys = new Keypair()
-    const keyPair = {
-      sk: keys.privKey.serialize(),
-      pk: keys.pubKey.serialize(),
-    }
-    return keyPair
-  }
 
   return (
     <div>
@@ -173,12 +163,8 @@ export default function Home() {
                       style={{ padding: "5px", marginRight: "10px" }}
                       type="button"
                       onClick={() => {
-                        setPoll(poll)
-                        //invoke new key creation
-                        const keyPair = genKeyPair()
-                        setMaciKeyPair(keyPair)
+                        setPoll(poll)                       
                         setOpenSignUpModal(true)
-                        // setMaciKeyPairs({ pk: "", sk: "" })
                       }}
                     >
                       Sign Up
@@ -213,8 +199,6 @@ export default function Home() {
                   handleClose={() => {
                     setOpenSignUpModal(false)
                   }}
-                  pk={maciKeyPair.pk}
-                  sk={maciKeyPair.sk}
                 ></SignupModal>
               </div>
               <div>
