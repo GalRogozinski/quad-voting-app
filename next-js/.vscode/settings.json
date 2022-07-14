@@ -3,6 +3,9 @@
     "source.fixAll.eslint": true,
     "source.fixAll": true
   },
+  "eslint.options": {
+    "overrideConfigFile": "/root/quad-voting-app/next-js/.eslintrc.json"
+  },
   "eslint.validate": [
     "javascript",
     "javascriptreact",
