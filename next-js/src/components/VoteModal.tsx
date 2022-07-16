@@ -58,6 +58,7 @@ export default function VoteModal({
   const [expirationDate, setExpirationDate] = React.useState(
     poll.expirationDate
   )
+
   const [pubKey, setPubKey] = React.useState(
     null
   )
@@ -142,7 +143,7 @@ export default function VoteModal({
                 fullWidth
                 label="Public Maci Key"
                 onChange={() => setPubKey(value)}
-                value={pubKey}
+                value={pubKey ?? window.localStorage.getItem("maciPK" + poll.pollID) ?? ""}
               />
             )}
           />
@@ -157,7 +158,7 @@ export default function VoteModal({
                 fullWidth
                 label="Private Maci Key"
                 onChange={() => setPrivKey(value)}
-                value={privKey ?? window.localStorage.getItem("privKey")}
+                value={privKey ?? window.localStorage.getItem("maciSK" + poll.pollID) ?? ""}
               />
             )}
           />
@@ -172,7 +173,7 @@ export default function VoteModal({
                 fullWidth
                 label="State Index"
                 onChange={() => setStateIndex(value)}
-                value={stateIndex ?? window.localStorage.getItem("stateIndex")}
+                value={stateIndex ?? window.localStorage.getItem("stateIndex" + poll.pollID) ?? 0}
               />
             )}
           />
