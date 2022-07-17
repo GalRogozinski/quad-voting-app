@@ -11,8 +11,9 @@ import NewPollModal from "@components/NewPollModal"
 import SignupModal from "@components/SignupModal"
 import VoteModal from "@components/VoteModal"
 import { MaciKeyPair, Poll } from "@models/poll"
-import { fetchPolls } from "@pages/_app"
+import { fetchPolls, tallyAPI } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
+import { AxiosError, AxiosResponse } from "axios"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
@@ -163,7 +164,7 @@ export default function Home() {
                       style={{ padding: "5px", marginRight: "10px" }}
                       type="button"
                       onClick={() => {
-                        setPoll(poll)                       
+                        setPoll(poll)
                         setOpenSignUpModal(true)
                       }}
                     >
@@ -183,8 +184,22 @@ export default function Home() {
                       style={{ padding: "5px", marginRight: "10px" }}
                       type="button"
                       onClick={() => {
-                        setPoll(poll)
-                        setOpenResultsModal(true)
+                        tallyAPI(poll.pollID, (res) => {
+                          if (res.data) {
+                            poll.tallyResult = JSON.parse(res.data[0])
+                            poll.subsidyResult = JSON.parse(res.data[1])
+                            setPoll(poll)
+                            setOpenResultsModal(true)
+                          }
+                          else {
+                            console.log("No results")
+                            alert("No results")
+                          }
+                        }, (err) => {
+                          console.error(err)
+                          throw new Error(err.stack)
+                        }
+                        )
                       }}
                     >
                       Show results and Verify!

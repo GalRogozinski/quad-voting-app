@@ -49,6 +49,17 @@ const publishAPI = (
     .catch((error) => errFunc(error))
 }
 
+const tallyAPI = (
+  pollID: number,
+  resFunc: (res: AxiosResponse) => void,
+  errFunc: (err: AxiosError<any>) => void
+) => {
+  axios
+    .get(`${COORDINATOR_URL}/maci/tally`, { params: { pollID: pollID } })
+    .then((response) => resFunc(response))
+  .catch((error) => errFunc(error))
+}
+
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <Web3ReactProvider connectors={connectors}>
@@ -59,4 +70,4 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 }
 
 export default MyApp
-export { fetchPolls, signUpAPI, publishAPI }
+export { fetchPolls, signUpAPI, publishAPI, tallyAPI }

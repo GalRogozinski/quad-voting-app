@@ -15,11 +15,30 @@ export type Poll = {
   vote_options: string[]
   //tally
   newTallCommitment: string
-  tally: number[]
   //UI helpers
   open: boolean
   openVoteModal: boolean
   openResultsModal: boolean
+  tallyResult: tallyData
+  subsidyResult: tallyData
+}
+
+export type tallyData = {
+  maci: string
+  pollId: number
+  newTallyCommitment: string
+  result: {
+    tally: number[]
+    salt: string
+  }
+  totalSpentVoiceCredits: {
+    spent: number
+    salt: string
+  }
+  perVOSpentVoiceCredits: {
+    tally: number[]
+    salt: string
+  }
 }
 
 export type SignUpOps = {
