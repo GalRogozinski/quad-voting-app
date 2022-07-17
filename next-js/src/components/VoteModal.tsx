@@ -17,6 +17,8 @@ import { Command, PubKey } from "maci-domainobjs"
 import { useForm, Controller } from "react-hook-form"
 import * as yup from "yup"
 
+
+
 export default function VoteModal({
   poll,
   isOpen,
@@ -43,7 +45,7 @@ export default function VoteModal({
   })
 
 
-  function getNonce() : number {
+  function getNonce(): number {
     const lastNonce: number = Number(window.localStorage.getItem("lastNonce"))
     if (lastNonce) {
       return lastNonce + 1
@@ -55,33 +57,17 @@ export default function VoteModal({
     return stringifyBigInts(genRandomSalt())
   }
 
-  const [expirationDate, setExpirationDate] = React.useState(
-    poll.expirationDate
-  )
-
-  const [pubKey, setPubKey] = React.useState(
-    null
-  )
-  const [privKey, setPrivKey] = React.useState(
-    null
-  )
-  const [stateIndex, setStateIndex] = React.useState(
-    null
-  )
-  const [nonce, setNonce] = React.useState(null)
-  const [salt, setSalt] = React.useState(generateSalt())
-
   const onSubmit = (data: any) => {
     console.log("vote")
     console.log(data)
     const command: Command = new Command(
-      BigInt(Number.parseInt(stateIndex ?? "")),
-      PubKey.unserialize(pubKey ?? ""),
+      BigInt(Number.parseInt(data.stateIndex)),
+      PubKey.unserialize(data.pubKey),
       BigInt(data.voteOptionIndex),
-      BigInt(1),
-      BigInt(nonce ?? 0),
+      BigInt(1), //TODO check how to change
+      BigInt(data.nonce),
       BigInt(poll.pollID),
-      unstringifyBigInts(salt)
+      unstringifyBigInts(data.salt)
     )
     const signature = command.sign(data.privKey)
     const publishOps: PublishOps = {
@@ -134,16 +120,16 @@ export default function VoteModal({
           />
           <p>{errors.expiration?.message}</p>
           <Controller
-            name="pubKey" 
+            name="pubKey"
             control={control}
-            render={({ field: { value } }) => (
+            render={({ field: { onChange, value } }) => (
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 label="Public Maci Key"
-                onChange={() => setPubKey(value)}
-                value={pubKey ?? window.localStorage.getItem("maciPK" + poll.pollID) ?? ""}
+                onChange={onChange}
+                value={value || (window.localStorage.getItem("maciPK" + poll.pollID) ?? "")}
               />
             )}
           />
@@ -151,14 +137,14 @@ export default function VoteModal({
           <Controller
             name="privKey"
             control={control}
-            render={({ field: { value } }) => (
+            render={({ field: { onChange, value } }) => (
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 label="Private Maci Key"
-                onChange={() => setPrivKey(value)}
-                value={privKey ?? window.localStorage.getItem("maciSK" + poll.pollID) ?? ""}
+                onChange={onChange}
+                defaultValue={value || (window.localStorage.getItem("maciSK" + poll.pollID) ?? "")}
               />
             )}
           />
@@ -172,8 +158,8 @@ export default function VoteModal({
                 required
                 fullWidth
                 label="State Index"
-                onChange={() => setStateIndex(value)}
-                value={stateIndex ?? window.localStorage.getItem("stateIndex" + poll.pollID) ?? 0}
+                onChange={onChange}
+                value={value || (window.localStorage.getItem("stateIndex" + poll.pollID) ?? 0)}
               />
             )}
           />
@@ -181,14 +167,14 @@ export default function VoteModal({
           <Controller
             name="nonce"
             control={control}
-            render={({ field: {onChange, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 label="Nonce"
-                onChange={() => setNonce(value)}
-                value={nonce ?? getNonce()}
+                onChange={onChange}
+                value={value ?? getNonce()}
               />
             )}
           />
@@ -203,7 +189,7 @@ export default function VoteModal({
                 fullWidth
                 label="Salt"
                 onChange={onChange}
-                value={salt}
+                value={value || generateSalt()}
               />
             )}
           />
@@ -216,8 +202,8 @@ export default function VoteModal({
                 required
                 fullWidth
                 label="Vote Options"
-                value={value || ""}
                 onChange={onChange}
+                value={value || ""}
               >
                 {poll.vote_options.map((option, index) => (
                   <MenuItem value={option} key={index}>
