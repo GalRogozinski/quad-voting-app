@@ -188,6 +188,7 @@ export default function VoteModal({
                 required
                 fullWidth
                 label="Salt"
+                type="number"
                 onChange={onChange}
                 value={value || generateSalt()}
               />
@@ -202,6 +203,7 @@ export default function VoteModal({
                 required
                 fullWidth
                 label="Vote Options"
+                type="number"
                 onChange={onChange}
                 value={value || ""}
               >
