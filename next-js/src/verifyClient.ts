@@ -1,6 +1,6 @@
 import { genTallyResultCommitment } from 'maci-core'
 import { hash2, hash3 } from 'maci-crypto'
-import {getDefaultSigner} from 'maci-contracts'
+import {getDefaultSigner, parseArtifact} from 'maci-contracts'
 
 
 // import {contractFilepath} from './config'
@@ -9,9 +9,7 @@ import * as ethers from 'ethers'
 import {
     validateEthAddress,
     contractExists,
-} from './utils'
-
-import {parseArtifact, } from 'maci-contracts';
+} from 'maci-cli/build/utils'
 
 export type VerifierOpts = {
     tally_data: any;
@@ -53,9 +51,9 @@ const verifyClient = async (args: VerifierOpts) => {
 
     const [ maciContractAbi ] = parseArtifact('MACI')
     const [ pollContractAbi ] = parseArtifact('Poll')
-    const [ pptContractAbi ] = parseArtifact['PollProcessorAndTallyer']
+    const [ pptContractAbi ] = parseArtifact('PollProcessorAndTallyer')
 
-    const signer = getDefaultSigner()
+    const signer = await getDefaultSigner()
 
     if (! (await contractExists(signer, pptAddress))) {
         console.error(`Error: there is no contract deployed at ${pptAddress}.`)
@@ -128,7 +126,7 @@ const verifyClient = async (args: VerifierOpts) => {
 
     // Compute newResultsCommitment
     const newResultsCommitment = genTallyResultCommitment(
-        tallyData.results.tally.map((x) => BigInt(x)),
+        tallyData.results.tally.map((x: any) => BigInt(x)),
         tallyData.results.salt,
         voteOptionTreeDepth
     )
@@ -141,7 +139,7 @@ const verifyClient = async (args: VerifierOpts) => {
 
     // Compute newPerVOSpentVoiceCreditsCommitment
     const newPerVOSpentVoiceCreditsCommitment = genTallyResultCommitment(
-        tallyData.map((x) => BigInt(x)),
+        tallyData.map((x: any) => BigInt(x)),
         tallyData.perVOSpentVoiceCredits.salt,
         voteOptionTreeDepth
     )
@@ -183,7 +181,7 @@ const verifyClient = async (args: VerifierOpts) => {
     
         // to compute newSubsidyCommitment, we can use genTallyResultCommitment
         const newSubsidyCommitment = genTallyResultCommitment(
-            subsidyData.results.subsidy.map((x) => BigInt(x)),
+            subsidyData.results.subsidy.map((x: any) => BigInt(x)),
             subsidyData.results.salt,
             voteOptionTreeDepth
         )
