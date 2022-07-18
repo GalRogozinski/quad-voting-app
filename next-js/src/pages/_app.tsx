@@ -55,7 +55,7 @@ const tallyAPI = (
   errFunc: (err: AxiosError<any>) => void
 ) => {
   axios
-    .get(`${COORDINATOR_URL}/maci/tally`, { params: { pollID: pollID } })
+    .get(`${COORDINATOR_URL}/maci/tallyResults`, { params: { pollID: pollID } })
     .then((response) => resFunc(response))
   .catch((error) => errFunc(error))
 }

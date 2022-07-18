@@ -5,141 +5,83 @@ import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
-import { useForm, Controller } from "react-hook-form"
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
-import { SignUpOps } from "@models/poll"
+import { Poll, SignUpOps } from "@models/poll"
 
 export default function ResultsModal({
-  isOpen = false,
-  onSubmit,
+  isOpen,
   handleClose,
-  pollName,
-  pollID,
-  pollAddress,
-  sk,
-  pk,
+  poll,
+  
 }: {
   isOpen: boolean
-  onSubmit: (data: SignUpOps) => any
   handleClose: () => void
-  pollName: string
-  pollID: number
-  pollAddress: string
-  sk: string
-  pk: string
-}) {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm()
-
-  const [registerError, setRegisterError] = React.useState("")
-
+  poll: Poll
+}) 
+{
   return (
     <div className="popup-box">
       <Dialog
         open={isOpen}
-        onSubmit={handleSubmit(
-          onSubmit({ ivcp_data: "", sg_data: "", pub_key: pk })
-        )}
       >
-        <DialogTitle>Sign Up To Vote on Poll {pollID}</DialogTitle>
+        <DialogTitle>Show results for {poll.poll_name}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            You must register before you can vote
+            The following results should be verified.
           </DialogContentText>
-          <Controller
-            name="pollName"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                fullWidth
-                required
-                value={pollName}
-                label="Poll Name"
-              />
-            )}
-          />
-          <Controller
-            name="pollID"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                fullWidth
-                required
-                value={pollID}
-                label="Poll ID"
-              />
-            )}
-          />
-          <Controller
-            name="pollAddress"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                label="Poll Address"
-                value={pollAddress}
-                fullWidth
-                required
-              />
-            )}
-          />
-          <Controller
-            name="sk"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                label="Secret Maci Key"
-                value={sk}
-              />
-            )}
-          />
-          <Controller
-            name="pk"
-            control={control}
-            render={({ field: { value } }) => (
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                label="Public Maci Key"
-                value={pk}
-              />
-            )}
-          />
+          <TableContainer component={Paper}>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Proposal</TableCell>
+                  <TableCell align="right">Tally Result</TableCell>
+                  <TableCell align="right">Subsidy Result</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {poll.tallyResult?.result?.tally.map((result, index) => (
+                  <TableRow key={index}>
+                    <TableCell component="th" scope="row">
+                      {result}
+                    </TableCell>
+                    {/* <TableCell align="right">{proposal.tally_result}</TableCell>
+                    <TableCell align="right">{proposal.subsidy_result}</TableCell> */}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
-              reset()
               handleClose()
             }}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Cancel
+            Close
           </Button>
           <Button
-            name="Register"
-            onClick={handleSubmit(
-              onSubmit({ ivcp_data: "", sg_data: "", pub_key: pk })
-            )}
+            name="Verify"
+            onClick={() => {
+              handleClose()
+            }}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Register
+            Verify
           </Button>
-          <p>{errors.Register?.message}</p>
+          {/* <p>{errors.Verify?.message}</p> */}
         </DialogActions>
       </Dialog>
     </div>

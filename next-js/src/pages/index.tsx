@@ -14,6 +14,7 @@ import { MaciKeyPair, Poll } from "@models/poll"
 import { fetchPolls, tallyAPI } from "@pages/_app"
 import ConnectWeb3 from "@pages/connect"
 import { AxiosError, AxiosResponse } from "axios"
+import ResultsModal from "@components/ResultsModal"
 
 export default function Home() {
   const [openPoll, setOpenPoll] = React.useState(false)
@@ -185,9 +186,12 @@ export default function Home() {
                       type="button"
                       onClick={() => {
                         tallyAPI(poll.pollID, (res) => {
-                          if (res.data) {
+                          console.log(res.data)
+                          if (res.data && res.data.length > 0) {
                             poll.tallyResult = JSON.parse(res.data[0])
+                            if (res.data.length > 1) {
                             poll.subsidyResult = JSON.parse(res.data[1])
+                            }
                             setPoll(poll)
                             setOpenResultsModal(true)
                           }
@@ -197,7 +201,7 @@ export default function Home() {
                           }
                         }, (err) => {
                           console.error(err)
-                          throw new Error(err.stack)
+                          throw new Error(err.message)
                         }
                         )
                       }}
@@ -224,6 +228,15 @@ export default function Home() {
                     setOpenVoteModal(false)
                   }}
                 />
+              </div>
+              <div>
+                <ResultsModal
+                  poll={poll}
+                  isOpen={openResultsModal}
+                  handleClose={() => {
+                    setOpenResultsModal(false)
+                  }}
+                  />
               </div>
             </div>
           </div>
