@@ -5,8 +5,9 @@
 export type Poll = {
   //contract info
   pollID: number
-  pollAddr: string
+  pollAddr: string                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
   maciAddress: string
+  pptAddr: string
 
   //user input
   poll_name: string
@@ -27,7 +28,7 @@ export type tallyData = {
   maci: string
   pollId: number
   newTallyCommitment: string
-  result: {
+  results: {
     tally: number[]
     salt: string
   }

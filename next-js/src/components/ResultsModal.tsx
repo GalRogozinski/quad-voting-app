@@ -12,6 +12,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { verifyClient } from "@verifyClient"
+
 
 import { Poll, SignUpOps } from "@models/poll"
 
@@ -42,13 +44,16 @@ export default function ResultsModal({
                 <TableRow>
                   <TableCell>Proposal</TableCell>
                   <TableCell align="right">Tally Result</TableCell>
-                  <TableCell align="right">Subsidy Result</TableCell>
+                  {/* <TableCell align="right">Subsidy Result</TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {poll.tallyResult?.result?.tally.map((result, index) => (
+                {poll.tallyResult?.results?.tally.map((result, index) => (
                   <TableRow key={index}>
                     <TableCell component="th" scope="row">
+                      {poll.vote_options[index]}
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="center">
                       {result}
                     </TableCell>
                     {/* <TableCell align="right">{proposal.tally_result}</TableCell>
@@ -73,6 +78,7 @@ export default function ResultsModal({
           <Button
             name="Verify"
             onClick={() => {
+              verifyClient({tally_data: poll.tallyResult, subsidy_data: poll.subsidyResult, maci_address: poll.maciAddress, poll_id: poll.pollID, ppt: poll.pptAddr })
               handleClose()
             }}
             fullWidth
