@@ -1,15 +1,15 @@
 import { genTallyResultCommitment } from 'maci-core'
 import { hash2, hash3 } from 'maci-crypto'
-import {getDefaultSigner, parseArtifact} from 'maci-contracts'
+import { Web3Provider } from '@ethersproject/providers'
 
 
 // import {contractFilepath} from './config'
 
 import * as ethers from 'ethers'
-import {
-    validateEthAddress,
-    contractExists,
-} from 'maci-cli/build/utils'
+// import {
+//     validateEthAddress,
+//     contractExists,
+// } from 'maci-cli/build/utils'
 
 export type VerifierOpts = {
     tally_data: any;
@@ -19,7 +19,7 @@ export type VerifierOpts = {
     ppt: string;
 }
 
-const verifyClient = async (args: VerifierOpts) => {
+const verifyClient = async (provider: Web3Provider, args: VerifierOpts) => {
     // const signer = await getDefaultSigner()
 
     const pollId = args.poll_id
@@ -38,50 +38,50 @@ const verifyClient = async (args: VerifierOpts) => {
     const pptAddress = args.ppt
 
     // MACI contract
-    if (!validateEthAddress(maciAddress)) {
-        console.error('Error: invalid MACI contract address')
-        throw new Error('Invalid MACI contract address')
-    }
+    // if (!validateEthAddress(maciAddress)) {
+    //     console.error('Error: invalid MACI contract address')
+    //     throw new Error('Invalid MACI contract address')
+    // }
 
-    // PollProcessorAndTallyer contract
-    if (!validateEthAddress(pptAddress)) {
-        console.error('Error: invalid PollProcessorAndTallyer contract address')
-        throw new Error('Invalid PollProcessorAndTallyer contract address')
-    }
+    // // PollProcessorAndTallyer contract
+    // if (!validateEthAddress(pptAddress)) {
+    //     console.error('Error: invalid PollProcessorAndTallyer contract address')
+    //     throw new Error('Invalid PollProcessorAndTallyer contract address')
+    // }
 
-    const [ maciContractAbi ] = parseArtifact('MACI')
-    const [ pollContractAbi ] = parseArtifact('Poll')
-    const [ pptContractAbi ] = parseArtifact('PollProcessorAndTallyer')
+  
+    const maciContractFile = require('maci-contracts/artifacts/contracts/MACI.sol/MACI.json')
+    const pollContractFile = require('maci-contracts/artifacts/contracts/Poll.sol/Poll.json')
+    const pptContractFile = require('maci-contracts/artifacts/contracts/Poll.sol/PollProcessorAndTallyer.json')
 
-    const signer = await getDefaultSigner()
 
-    if (! (await contractExists(signer, pptAddress))) {
-        console.error(`Error: there is no contract deployed at ${pptAddress}.`)
-        return 1
-    }
+    // if (! (await contractExists(provider, pptAddress))) {
+    //     console.error(`Error: there is no contract deployed at ${pptAddress}.`)
+    //     return 1
+    // }
 
 	const maciContract = new ethers.Contract(
         maciAddress,
-        maciContractAbi,
-        signer,
+        maciContractFile.abi,
+        provider,
     )
 
     const pollAddr = await maciContract.polls(pollId)
-    if (! (await contractExists(signer, pollAddr))) {
-        console.error('Error: there is no Poll contract with this poll ID linked to the specified MACI contract.')
-        throw new Error('Error: there is no Poll contract with this poll ID linked to the specified MACI')
-    }
+    // if (! (await contractExists(provider, pollAddr))) {
+    //     console.error('Error: there is no Poll contract with this poll ID linked to the specified MACI contract.')
+    //     throw new Error('Error: there is no Poll contract with this poll ID linked to the specified MACI')
+    // }
 
     const pollContract = new ethers.Contract(
         pollAddr,
-        pollContractAbi,
-        signer,
+        pollContractFile.abi,
+        provider,
     )
 
     const pptContract = new ethers.Contract(
         pptAddress,
-        pptContractAbi,
-        signer,
+        pptContractFile.abi,
+        provider,
     )
 
        // ----------------------------------------------
@@ -139,7 +139,7 @@ const verifyClient = async (args: VerifierOpts) => {
 
     // Compute newPerVOSpentVoiceCreditsCommitment
     const newPerVOSpentVoiceCreditsCommitment = genTallyResultCommitment(
-        tallyData.map((x: any) => BigInt(x)),
+        tallyData.perVOSpentVoiceCredits.tally.map((x: any) => BigInt(x)),
         tallyData.perVOSpentVoiceCredits.salt,
         voteOptionTreeDepth
     )

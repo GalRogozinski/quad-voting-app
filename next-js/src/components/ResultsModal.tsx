@@ -15,10 +15,12 @@ import Paper from '@mui/material/Paper';
 import { verifyClient } from "@verifyClient"
 
 
-import { Poll, SignUpOps } from "@models/poll"
+import { Poll } from "@models/poll"
+import { useWeb3React } from "@web3-react/core"
 
 export default function ResultsModal({
   isOpen,
+
   handleClose,
   poll,
   
@@ -28,6 +30,8 @@ export default function ResultsModal({
   poll: Poll
 }) 
 {
+  const { account, chainId, connector, error, provider } = useWeb3React()
+
   return (
     <div className="popup-box">
       <Dialog
@@ -78,8 +82,12 @@ export default function ResultsModal({
           <Button
             name="Verify"
             onClick={() => {
-              verifyClient({tally_data: poll.tallyResult, subsidy_data: poll.subsidyResult, maci_address: poll.maciAddress, poll_id: poll.pollID, ppt: poll.pptAddr })
-              handleClose()
+              if (verifyClient(provider, {tally_data: poll.tallyResult, subsidy_data: poll.subsidyResult, maci_address: poll.maciAddress, poll_id: poll.pollID, ppt: poll.pptAddr })) {
+                alert("Verified")
+              }
+              else {
+                alert ("Not verified")
+              }
             }}
             fullWidth
             variant="contained"
