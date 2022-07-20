@@ -81,8 +81,8 @@ export default function ResultsModal({
           </Button>
           <Button
             name="Verify"
-            onClick={() => {
-              if (verifyClient(provider, {tally_data: poll.tallyResult, subsidy_data: poll.subsidyResult, maci_address: poll.maciAddress, poll_id: poll.pollID, ppt: poll.pptAddr })) {
+            onClick={async () => {
+              if (await verifyClient(provider, {tally_data: poll.tallyResult, subsidy_data: poll.subsidyResult, maci_address: poll.maciAddress, poll_id: poll.pollID, ppt: poll.pptAddr })) {
                 alert("Verified")
               }
               else {
